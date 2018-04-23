@@ -1,4 +1,6 @@
-package edu.ncsu.awbeggs.chess.colors;
+package edu.ncsu.awbeggs.chess.piece;
+
+import edu.ncsu.awbeggs.chess.colors.ANSIColor;
 
 /**
  * Represents the Color of a playing piece.
