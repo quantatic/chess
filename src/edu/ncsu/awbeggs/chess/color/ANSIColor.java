@@ -1,4 +1,4 @@
-package edu.ncsu.awbeggs.chess.colors;
+package edu.ncsu.awbeggs.chess.color;
 
 /**
  * Color wrapper for ANSI Color codes.
