@@ -1,6 +1,6 @@
-package edu.ncsu.awbeggs.chess.board;
+package edu.ncsu.awbeggs.chess.model.board;
 
-import edu.ncsu.awbeggs.chess.piece.Piece;
+import edu.ncsu.awbeggs.chess.model.piece.Piece;
 
 public class Location {
 	private Piece occupant;
@@ -31,10 +31,13 @@ public class Location {
 	}
 	
 	public String toString() {
+		String result = "";
 		if(occupant != null) {
-			return occupant.toString();
+			result += occupant.toString();
+		} else {
+			result += " ";
 		}
 		
-		return " ";
+		return result;
 	}
 }

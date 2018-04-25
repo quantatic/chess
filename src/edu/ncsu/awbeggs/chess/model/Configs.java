@@ -1,4 +1,4 @@
-package edu.ncsu.awbeggs.chess;
+package edu.ncsu.awbeggs.chess.model;
 
 /**
  * Constants for a Chess game.

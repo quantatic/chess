@@ -1,6 +1,6 @@
-package edu.ncsu.awbeggs.chess.piece;
+package edu.ncsu.awbeggs.chess.model.piece;
 
-import edu.ncsu.awbeggs.chess.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Location;
 
 /**
  * Represents an arbitrary Piece, which can be placed on a chessboard.
