@@ -13,7 +13,6 @@ public class SpriteIO {
 	
 	public static BufferedImage readSpriteFromPath(String name, PieceColor color) {
 		URL urlPath = SpriteIO.class.getResource("/" + (color == PieceColor.WHITE ? "white" : "black") + "/" + name + ".png");
-		System.out.println(urlPath);
 		BufferedImage in;
 		
 		try {

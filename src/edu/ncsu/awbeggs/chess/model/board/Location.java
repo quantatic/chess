@@ -34,12 +34,14 @@ public class Location extends Observable {
 		}
 	}
 	
-	public void removeOccupant() {
-		this.occupant = null;
+	public Location getNeighbor(int rowOffset, int colOffset) {
+		return board.getLocation(getRow() + rowOffset, getCol() + colOffset);
 	}
 	
-	public Location getNeighbor(int rowOffset, int colOffset) {
-		return board.getLocation(row + rowOffset, col + colOffset);
+	public Piece removeOccupant() {
+		Piece oldOccupant = this.occupant;
+		this.occupant = null;
+		return oldOccupant;
 	}
 	
 	public boolean isEmpty() {

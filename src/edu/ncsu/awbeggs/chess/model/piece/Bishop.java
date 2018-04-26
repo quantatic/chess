@@ -4,17 +4,18 @@ import java.util.HashSet;
 import java.util.Observable;
 import java.util.Set;
 
+import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 public class Bishop extends Piece{
 
-	public Bishop(Location location, PieceColor color) {
-		super(location, color, SpriteLookup.BISHOP);
+	public Bishop(Location location, PieceColor color, Board board) {
+		super(location, color, SpriteLookup.BISHOP, board);
 	}
 
 	@Override
-	public Set<Location> getValidMoves() {
+	public Set<Location> getValidMovesNoCheck() {
 		Set<Location> validMoves = new HashSet<>();
 		Location l = getLocation();
 		

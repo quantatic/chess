@@ -1,19 +1,19 @@
 package edu.ncsu.awbeggs.chess.model.piece;
 
 import java.util.HashSet;
-import java.util.Observable;
 import java.util.Set;
 
+import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 public class Pawn extends Piece{
-	public Pawn(Location location, PieceColor color) {
-		super(location, color, SpriteLookup.PAWN);
+	public Pawn(Location location, PieceColor color, Board board) {
+		super(location, color, SpriteLookup.PAWN, board);
 	}
 
 	@Override
-	public Set<Location> getValidMoves() {
+	public Set<Location> getValidMovesNoCheck() {
 		Set<Location> valid = new HashSet<>();
 		int direction = getColor() == PieceColor.WHITE ? 1 : -1;
 		Location l = getLocation();

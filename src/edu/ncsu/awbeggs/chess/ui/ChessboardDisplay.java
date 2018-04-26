@@ -48,7 +48,7 @@ public class ChessboardDisplay extends JPanel{
 			public void mousePressed(MouseEvent e) {
 				board.updateSelected(board.getLocation(8 - (e.getY() / SQUARE_HEIGHT),
 						1 + (e.getX() / SQUARE_WIDTH)));
-				repaint();
+				ChessboardDisplay.this.repaint();
 			}
 		});
 	}
@@ -56,6 +56,7 @@ public class ChessboardDisplay extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
+		g2d.clearRect(0, 0, SQUARE_WIDTH * board.getWidth(), SQUARE_HEIGHT * board.getHeight());
 		for(int renderCol = 1; renderCol <= board.getWidth(); renderCol++) {
 			for(int renderRow = 1; renderRow <= board.getHeight(); renderRow++) {
 				g2d.setColor((renderRow + renderCol) % 2 == 0 ? Color.WHITE : Color.decode("#CD853F"));
@@ -67,7 +68,7 @@ public class ChessboardDisplay extends JPanel{
 					g2d.drawImage(currentLocation.getOccupant().getRepresentation(),
 							(renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, null);
 				}
-				
+
 				if(board.getSelected() != null && board.getSelected().getOccupant() != null
 						&& board.getSelected().getOccupant().getValidMoves().contains(currentLocation)) {
 					g2d.setColor(new Color(0, 255, 0, 200));

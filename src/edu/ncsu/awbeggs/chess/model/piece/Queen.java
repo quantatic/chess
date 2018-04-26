@@ -1,20 +1,19 @@
 package edu.ncsu.awbeggs.chess.model.piece;
 
-import java.awt.image.BufferedImage;
 import java.util.HashSet;
-import java.util.Observable;
 import java.util.Set;
 
+import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 public class Queen extends Piece {
 
-	public Queen(Location location, PieceColor color) {
-		super(location, color, SpriteLookup.QUEEN);
+	public Queen(Location location, PieceColor color, Board board) {
+		super(location, color, SpriteLookup.QUEEN, board);
 	}
 
-	public Set<Location> getValidMoves() {
+	public Set<Location> getValidMovesNoCheck() {
 		Set<Location> validMoves = new HashSet<>();
 		Location l = getLocation();
 		

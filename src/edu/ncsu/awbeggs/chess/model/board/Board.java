@@ -1,9 +1,13 @@
 package edu.ncsu.awbeggs.chess.model.board;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import edu.ncsu.awbeggs.chess.model.piece.Bishop;
 import edu.ncsu.awbeggs.chess.model.piece.King;
 import edu.ncsu.awbeggs.chess.model.piece.Knight;
 import edu.ncsu.awbeggs.chess.model.piece.Pawn;
+import edu.ncsu.awbeggs.chess.model.piece.Piece;
 import edu.ncsu.awbeggs.chess.model.piece.PieceColor;
 import edu.ncsu.awbeggs.chess.model.piece.Queen;
 import edu.ncsu.awbeggs.chess.model.piece.Rook;
@@ -37,27 +41,27 @@ public class Board {
 			}
 		}
 		for(int col = 1; col <= BOARD_WIDTH; col++) {
-			new Pawn(getLocation(2, col), PieceColor.WHITE);
-			new Pawn(getLocation(7, col), PieceColor.BLACK);
+			new Pawn(getLocation(2, col), PieceColor.WHITE, this);
+			new Pawn(getLocation(7, col), PieceColor.BLACK, this);
 		}
 		
-		new Rook(getLocation(1, 1), PieceColor.WHITE);
-		new Knight(getLocation(1, 2), PieceColor.WHITE);
-		new Bishop(getLocation(1, 3), PieceColor.WHITE);
-		new Queen(getLocation(1, 4), PieceColor.WHITE);
-		new King(getLocation(1, 5), PieceColor.WHITE);
-		new Bishop(getLocation(1, 6), PieceColor.WHITE);
-		new Knight(getLocation(1, 7), PieceColor.WHITE);
-		new Rook(getLocation(1, 8), PieceColor.WHITE);
+		new Rook(getLocation(1, 1), PieceColor.WHITE, this);
+		new Knight(getLocation(1, 2), PieceColor.WHITE, this);
+		new Bishop(getLocation(1, 3), PieceColor.WHITE, this);
+		new Queen(getLocation(1, 4), PieceColor.WHITE, this);
+		new King(getLocation(1, 5), PieceColor.WHITE, this);
+		new Bishop(getLocation(1, 6), PieceColor.WHITE, this);
+		new Knight(getLocation(1, 7), PieceColor.WHITE, this);
+		new Rook(getLocation(1, 8), PieceColor.WHITE, this);
 		
-		new Rook(getLocation(8, 1), PieceColor.BLACK);
-		new Knight(getLocation(8, 2), PieceColor.BLACK);
-		new Bishop(getLocation(8, 3), PieceColor.BLACK);
-		new Queen(getLocation(8, 4), PieceColor.BLACK);
-		new King(getLocation(8, 5), PieceColor.BLACK);
-		new Bishop(getLocation(8, 6), PieceColor.BLACK);
-		new Knight(getLocation(8, 7), PieceColor.BLACK);
-		new Rook(getLocation(8, 8), PieceColor.BLACK);
+		new Rook(getLocation(8, 1), PieceColor.BLACK, this);
+		new Knight(getLocation(8, 2), PieceColor.BLACK, this);
+		new Bishop(getLocation(8, 3), PieceColor.BLACK, this);
+		new Queen(getLocation(8, 4), PieceColor.BLACK, this);
+		new King(getLocation(8, 5), PieceColor.BLACK, this);
+		new Bishop(getLocation(8, 6), PieceColor.BLACK, this);
+		new Knight(getLocation(8, 7), PieceColor.BLACK, this);
+		new Rook(getLocation(8, 8), PieceColor.BLACK, this);
 		
 		currentTurn = PieceColor.WHITE;
 	}
@@ -68,16 +72,46 @@ public class Board {
 	
 	public void updateSelected(Location selected) {
 		if(this.selectedSpace != null && this.selectedSpace.getOccupant() != null
-				&& this.selectedSpace.getOccupant().moveTo(selected)) {
+				&& this.selectedSpace.getOccupant().attemptMove(selected)) {
 			this.selectedSpace = null;
 			this.currentTurn = (this.currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 		} else if(this.selectedSpace != selected 
-				&& this.selectedSpace == null && selected.getOccupant() != null &&
-				selected.getOccupant().getColor() == currentTurn) {
+				&& this.selectedSpace == null && selected.getOccupant() != null 
+				&& selected.getOccupant().getColor() == currentTurn 
+				&& selected.getOccupant().getValidMoves().size() > 0) {
 			this.selectedSpace = selected;
 		} else {
 			this.selectedSpace = null;
 		}
+	}
+	
+	public King getKing(PieceColor c){
+		for(int row = 1; row <= BOARD_HEIGHT; row++) {
+			for(int col = 1; col <= BOARD_WIDTH; col++) {
+				Location tmpLocation = getLocation(row, col);
+				if(tmpLocation != null && (tmpLocation.getOccupant() instanceof King)
+						&& (tmpLocation.getOccupant().getColor() == c)) {
+					return (King) tmpLocation.getOccupant();
+				}
+			}
+		}
+		
+		throw new IllegalArgumentException();
+	}
+	
+	public Set<Piece> getPieces(PieceColor c){
+		Set<Piece> pieces = new HashSet<>();
+		for(int row = 1; row <= BOARD_HEIGHT; row++) {
+			for(int col = 1; col <= BOARD_WIDTH; col++) {
+				Location tmpLocation = getLocation(row, col);
+				if(tmpLocation != null && tmpLocation.getOccupant() != null 
+						&& tmpLocation.getOccupant().getColor() == c) {
+					pieces.add(tmpLocation.getOccupant());
+				}
+			}
+		}
+		
+		return pieces;
 	}
 	
 	public Location getLocation(int row, int col) {

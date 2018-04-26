@@ -12,9 +12,9 @@ public class SpriteLookup {
 	
 	public static final SpriteLookup ROOK = new SpriteLookup("rook", "♖", "♜");
 	
-	public static final SpriteLookup KNIGHT = new SpriteLookup("knight", "♗", "♝");
+	public static final SpriteLookup KNIGHT = new SpriteLookup("knight", "♘", "♞");
 	
-	public static final SpriteLookup BISHOP = new SpriteLookup("bishop", "♘", "♞");
+	public static final SpriteLookup BISHOP = new SpriteLookup("bishop", "♗", "♝");
 	
 	public static final SpriteLookup PAWN = new SpriteLookup("pawn", "♙", "♟");
 	

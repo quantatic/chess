@@ -17,7 +17,6 @@ public class Handler {
 		
 		
 		SwingUtilities.invokeLater(new Runnable() {
-			
 			@Override
 			public void run() {
 				ChessGUI g = new ChessGUI(c);
