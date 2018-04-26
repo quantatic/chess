@@ -1,6 +1,10 @@
 package edu.ncsu.awbeggs.chess.model.board;
 
-import edu.ncsu.awbeggs.chess.model.Configs;
+import java.util.Random;
+
+import edu.ncsu.awbeggs.chess.model.piece.King;
+import edu.ncsu.awbeggs.chess.model.piece.PieceColor;
+import edu.ncsu.awbeggs.chess.model.piece.Queen;
 
 /**
  * Represents a playing board.
@@ -9,17 +13,38 @@ import edu.ncsu.awbeggs.chess.model.Configs;
 public class Board {
 	private Location[][] locations;
 	
+	/** Height of a playing board. */
+	private static final int BOARD_HEIGHT = 8;
+	
+	/** Width of a playing board. */
+	private static final int BOARD_WIDTH = 8;
+	
 	/**
 	 * Creates a new board, and fills it with the correct number of empty locations.
 	 */
 	public Board() {
-		locations = new Location[Configs.BOARD_HEIGHT][Configs.BOARD_WIDTH];
+		locations = new Location[BOARD_HEIGHT][BOARD_WIDTH];
 		
-		for(int row = 0; row < Configs.BOARD_HEIGHT; row++) {
-			for(int col = 0; col < Configs.BOARD_WIDTH; col++) {
+		for(int row = 0; row < BOARD_HEIGHT; row++) {
+			for(int col = 0; col < BOARD_WIDTH; col++) {
 				locations[row][col] = new Location(row, col);
+				PieceColor c = new Random().nextInt(2) == 0 ? PieceColor.WHITE : PieceColor.BLACK;
+				if(new Random().nextInt(2) == 1) {
+					new King(locations[row][col], c);
+				} else {
+					new Queen(locations[row][col], c);
+				}
+				
 			}
 		}
+	}
+	
+	public int getWidth() {
+		return BOARD_WIDTH;
+	}
+	
+	public int getHeight() {
+		return BOARD_HEIGHT;
 	}
 	
 	/**
@@ -27,14 +52,13 @@ public class Board {
 	 * @return a String representation of a playing board.
 	 */
 	public String toString() {
-		String horizontal = "---------------------------------\n";
+		String horizontal = " ---------------------------------\n";
 		String result = horizontal;
-		for(int row = 0; row < Configs.BOARD_HEIGHT; row++) {
+		for(int row = 0; row < BOARD_HEIGHT; row++) {
 			result += "| ";
-			for(int col = 0; col < Configs.BOARD_WIDTH; col++) {
+			for(int col = 0; col < BOARD_WIDTH; col++) {
 				result += locations[row][col].toString();
-				result += " ";
-				result += "| ";
+				result += "  | ";
 			}
 			result += "\n";
 			result += horizontal;
@@ -43,8 +67,7 @@ public class Board {
 		return result;
 	}
 	
-	public static void main(String[] args) {
-		Board b = new Board();
-		System.out.println(b);
+	public Location getLocation(int row, int col) {
+		return locations[row][col];
 	}
 }

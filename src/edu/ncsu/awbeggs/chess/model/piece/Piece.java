@@ -1,5 +1,7 @@
 package edu.ncsu.awbeggs.chess.model.piece;
 
+import java.awt.image.BufferedImage;
+
 import edu.ncsu.awbeggs.chess.model.board.Location;
 
 /**
@@ -7,12 +9,14 @@ import edu.ncsu.awbeggs.chess.model.board.Location;
  * @author Aidan Beggs
  */
 public abstract class Piece {
+
 	private Location location;
 	
 	private PieceColor color;
 	
-	public Piece(Location location) {
+	public Piece(Location location, PieceColor color) {
 		setLocation(location);
+		this.color = color;
 	}
 	
 	public void setLocation(Location location) {
@@ -30,5 +34,12 @@ public abstract class Piece {
 		return this.location;
 	}
 	
+	public PieceColor getColor() {
+		return this.color;
+	}
+	
 	public abstract String toString();
+	
+	
+	public abstract BufferedImage getRepresentation();
 }
