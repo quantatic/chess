@@ -10,20 +10,18 @@ public class ChessGUI extends JFrame{
 	 */
 	private static final long serialVersionUID = -4062699211127160865L;
 	
-	ChessboardDisplay c;
+	private ChessboardDisplay c;
 	
-	public ChessGUI() {
-		
-		
+	public ChessGUI(ChessboardDisplay c) {
 		setLayout(new FlowLayout());
-		c = new ChessboardDisplay();
+		this.c = c;
 		
-		System.out.println(c);
-		
-		setMinimumSize(c.getMinimumSize());
 		add(c);
 		
 		pack();
+		setMinimumSize(getSize());
+		
 		setTitle("Chess Game");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 }

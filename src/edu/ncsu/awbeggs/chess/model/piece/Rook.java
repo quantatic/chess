@@ -8,10 +8,10 @@ import java.util.Set;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
-public class Queen extends Piece {
+public class Rook extends Piece{
 
-	public Queen(Location location, PieceColor color) {
-		super(location, color, SpriteLookup.QUEEN);
+	public Rook(Location location, PieceColor color) {
+		super(location, color, SpriteLookup.ROOK);
 	}
 
 	public Set<Location> getValidMoves() {
@@ -20,6 +20,10 @@ public class Queen extends Piece {
 		
 		for(int rowMod : new int[] {-1, 0, 1}) {
 			for(int colMod : new int[] {-1, 0, 1}) {
+				if(Math.abs(rowMod + colMod) != 1) {
+					continue;
+				}
+				
 				int tmpOffsetRow = rowMod;
 				int tmpOffsetCol = colMod;
 				Location tmpLocation = l.getNeighbor(tmpOffsetRow, tmpOffsetCol);
@@ -38,6 +42,4 @@ public class Queen extends Piece {
 		
 		return validMoves;
 	}
-
-
 }
