@@ -23,5 +23,6 @@ public class ChessGUI extends JFrame{
 		
 		setTitle("Chess Game");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 	}
 }

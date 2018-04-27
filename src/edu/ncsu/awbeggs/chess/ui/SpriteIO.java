@@ -12,7 +12,7 @@ import edu.ncsu.awbeggs.chess.model.piece.PieceColor;
 public class SpriteIO {
 	
 	public static BufferedImage readSpriteFromPath(String name, PieceColor color) {
-		URL urlPath = SpriteIO.class.getResource("/" + (color == PieceColor.WHITE ? "white" : "black") + "/" + name + ".png");
+		URL urlPath = SpriteIO.class.getResource("/pieces/" + (color == PieceColor.WHITE ? "white" : "black") + "/" + name + ".png");
 		BufferedImage in;
 		
 		try {

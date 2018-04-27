@@ -3,6 +3,9 @@ package edu.ncsu.awbeggs.chess.model.board;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
+
 import edu.ncsu.awbeggs.chess.model.piece.Bishop;
 import edu.ncsu.awbeggs.chess.model.piece.King;
 import edu.ncsu.awbeggs.chess.model.piece.Knight;
@@ -96,7 +99,7 @@ public class Board {
 			}
 		}
 		
-		throw new IllegalArgumentException();
+		return null;
 	}
 	
 	public Set<Piece> getPieces(PieceColor c){
@@ -114,6 +117,18 @@ public class Board {
 		return pieces;
 	}
 	
+	public boolean isInCheckmate(PieceColor c) {
+		Set<Piece> pieces = getPieces(c);
+		
+		for(Piece p : pieces) {
+			if(!p.getValidMoves().isEmpty()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	public Location getLocation(int row, int col) {
 		if(row > 0 && row <= BOARD_HEIGHT && col > 0 && col <= BOARD_WIDTH) {
 			return locations[row - 1][col - 1];
@@ -128,6 +143,10 @@ public class Board {
 	
 	public int getHeight() {
 		return BOARD_HEIGHT;
+	}
+	
+	public PieceColor getCurrentTurn() {
+		return this.currentTurn;
 	}
 	
 	/**

@@ -2,8 +2,6 @@ package edu.ncsu.awbeggs.chess.model.piece;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Observer;
 import java.util.Set;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
@@ -35,29 +33,35 @@ public abstract class Piece{
 		Set<Location> valid = getValidMoves();
 		
 		if(valid.contains(l)) {
-			moveTo(l);
+			setLocation(l);
 			return true;
 		}
 		
 		return false;
 	}
 	
-	private Piece moveTo(Location l) {
-		Piece oldOccupant = l.removeOccupant();
-		getLocation().removeOccupant();
-		setLocation(l);
-		return oldOccupant;
-	}
-	
-	public void setLocation(Location location) {
-		if(location == null) {
-			throw new IllegalArgumentException();
+	/**
+	 * Updates the {@link Location} of a Piece, removes the old Piece at the new {@link Location}.
+	 * @param location the new {@link Location} of this Piece.
+	 * @return the {@link Piece} that used to reside at the new Location.
+	 */
+	public Piece setLocation(Location location) {
+		Piece oldPiece = null;
+		
+		if(this.location != null) {
+			this.location.setOccupant(null);
 		}
+		
 		this.location = location;
 		
-		if(!(location.getOccupant() == this)) {
-			location.setOccupant(this);
+		if(location != null) {
+			oldPiece = location.getOccupant();
+			if(location.getOccupant() != this) {
+				 location.setOccupant(this);
+			}
 		}
+		
+		return oldPiece;
 	}
 	
 	protected abstract Set<Location> getValidMovesNoCheck();
@@ -65,25 +69,21 @@ public abstract class Piece{
 	public Set<Location> getValidMoves() {
 		Set<Location> noCheckValid = getValidMovesNoCheck();
 		Set<Location> valid = new HashSet<>();
+		King k = board.getKing(getColor());
+		if(k == null) {
+			return valid;
+		}
 		for(Location tmp : noCheckValid) {
 			valid.add(tmp);
 			Location oldLocation = getLocation();
-			Piece oldPiece = moveTo(tmp);
-			King k = board.getKing(getColor());
-			Set<Piece> otherPieces = board.getPieces((getColor() == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE);
-			for(Piece p : otherPieces) {
-				if(p.getValidMovesNoCheck().contains(k.getLocation())) {
-					valid.remove(tmp);
-					break;
-				}
+			Piece oldPiece = setLocation(tmp);
+			if(k.isInCheck()) {
+				valid.remove(tmp);
 			}
-			moveTo(oldLocation);
 			
-			if(oldPiece != null) {
-				oldPiece.setLocation(tmp);
-			} else {
-				tmp.removeOccupant();
-			}
+			setLocation(oldLocation);
+			
+			tmp.setOccupant(oldPiece);
 		}
 		
 		return valid;
@@ -103,5 +103,9 @@ public abstract class Piece{
 	
 	public BufferedImage getRepresentation() {
 		return lookup.lookupSpriteImage(getColor());
+	}
+	
+	protected Board getBoard() {
+		return this.board;
 	}
 }

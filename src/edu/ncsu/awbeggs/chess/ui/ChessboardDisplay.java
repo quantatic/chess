@@ -10,10 +10,12 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.piece.King;
 
 public class ChessboardDisplay extends JPanel{
 	
@@ -48,7 +50,10 @@ public class ChessboardDisplay extends JPanel{
 			public void mousePressed(MouseEvent e) {
 				board.updateSelected(board.getLocation(8 - (e.getY() / SQUARE_HEIGHT),
 						1 + (e.getX() / SQUARE_WIDTH)));
-				ChessboardDisplay.this.repaint();
+				repaint();
+				if(board.isInCheckmate(board.getCurrentTurn())) {
+					JOptionPane.showMessageDialog(null, board.getCurrentTurn() + " has been checkmated!", "CHECKMATE!", JOptionPane.OK_OPTION);
+				}
 			}
 		});
 	}
@@ -64,17 +69,27 @@ public class ChessboardDisplay extends JPanel{
 						SQUARE_WIDTH, SQUARE_HEIGHT);
 				
 				Location currentLocation = board.getLocation(9 - renderRow, renderCol);
-				if(currentLocation.getOccupant() != null) {
-					g2d.drawImage(currentLocation.getOccupant().getRepresentation(),
-							(renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, null);
+				if(currentLocation.getOccupant() instanceof King) {
+					if(((King) currentLocation.getOccupant()).isInCheck()) {
+						g2d.setColor(new Color(255, 0, 0, 200));
+						g2d.fillRect((renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, 
+								SQUARE_WIDTH, SQUARE_HEIGHT);
+					}
 				}
-
+				
 				if(board.getSelected() != null && board.getSelected().getOccupant() != null
 						&& board.getSelected().getOccupant().getValidMoves().contains(currentLocation)) {
 					g2d.setColor(new Color(0, 255, 0, 200));
 					g2d.fillRect((renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, 
 							SQUARE_WIDTH, SQUARE_HEIGHT);
 				}
+				
+				if(currentLocation.getOccupant() != null) {
+					g2d.drawImage(currentLocation.getOccupant().getRepresentation(),
+							(renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, null);
+				}
+
+				
 			}
 		}
 	}

@@ -25,23 +25,25 @@ public class Location extends Observable {
 		this.board = board;
 	}
 	
-	public void setOccupant(Piece piece) {
-		
+	/**
+	 * Sets a new {@link Piece} to reside at this Location, and removes the old {@link Piece}
+	 * that used to reside at this Location.
+	 * @param piece the new {@link Piece} to reside at this Location.
+	 * @return the old {@link Piece} that used to reside at this Location.
+	 */
+	public Piece setOccupant(Piece piece) {
+		Piece oldOccupant = getOccupant();
 		this.occupant = piece;
 		
-		if(!(occupant.getLocation() == this)) {
+		if(occupant != null && occupant.getLocation() != this) {
 			occupant.setLocation(this);
 		}
+		
+		return oldOccupant;
 	}
 	
 	public Location getNeighbor(int rowOffset, int colOffset) {
 		return board.getLocation(getRow() + rowOffset, getCol() + colOffset);
-	}
-	
-	public Piece removeOccupant() {
-		Piece oldOccupant = this.occupant;
-		this.occupant = null;
-		return oldOccupant;
 	}
 	
 	public boolean isEmpty() {

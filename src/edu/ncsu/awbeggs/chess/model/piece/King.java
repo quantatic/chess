@@ -14,7 +14,7 @@ public class King extends Piece{
 	}
 
 	@Override
-	public Set<Location> getValidMovesNoCheck() {
+	protected Set<Location> getValidMovesNoCheck() {
 		Set<Location> valid = new HashSet<>();
 		Location l = getLocation();
 		
@@ -29,5 +29,16 @@ public class King extends Piece{
 		}
 		
 		return valid;
+	}
+	
+	public boolean isInCheck() {
+		Set<Piece> otherPieces = getBoard().getPieces((getColor() == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE);
+		for(Piece p : otherPieces) {
+			if(p.getValidMovesNoCheck().contains(getLocation())) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
