@@ -3,9 +3,6 @@ package edu.ncsu.awbeggs.chess.model.board;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-
 import edu.ncsu.awbeggs.chess.model.piece.Bishop;
 import edu.ncsu.awbeggs.chess.model.piece.King;
 import edu.ncsu.awbeggs.chess.model.piece.Knight;
@@ -69,10 +66,19 @@ public class Board {
 		currentTurn = PieceColor.WHITE;
 	}
 	
+	/**
+	 * Gets the {@link Location} of the selected {@link Piece}.
+	 * @return the {@link Location} of the selected {@link Piece}.
+	 */
 	public Location getSelected() {
 		return selectedSpace;
 	}
 	
+	/**
+	 * Updates the selected {@link Location} of this Board, performing necessary actions if
+	 * a {@link Piece} has been attempted to be moved.
+	 * @param selected the new {@link Location} that has been attempted to be selected.
+	 */
 	public void updateSelected(Location selected) {
 		if(this.selectedSpace != null && this.selectedSpace.getOccupant() != null
 				&& this.selectedSpace.getOccupant().attemptMove(selected)) {
@@ -88,6 +94,12 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Gets the {@link King} of this Board of a given {@link PieceColor}.
+	 * @param c the {@link PieceColor} of the {@link PieceColor to look for}.
+	 * @return the found {@link King} of the passed {@link PieceColor}, or null if no 
+	 * {@link King} of the given {@link PieceColor} is found.
+	 */
 	public King getKing(PieceColor c){
 		for(int row = 1; row <= BOARD_HEIGHT; row++) {
 			for(int col = 1; col <= BOARD_WIDTH; col++) {
@@ -102,6 +114,11 @@ public class Board {
 		return null;
 	}
 	
+	/**
+	 * Gets a {@link Set} of any {@link Piece} matching a given {@link PieceColor}.
+	 * @param c the {@link PieceColor} to look for any {@link Piece} matching.
+	 * @return a {@link Set} of any {@link Piece} matching a given {@link PieceColor}.
+	 */
 	public Set<Piece> getPieces(PieceColor c){
 		Set<Piece> pieces = new HashSet<>();
 		for(int row = 1; row <= BOARD_HEIGHT; row++) {
@@ -117,6 +134,13 @@ public class Board {
 		return pieces;
 	}
 	
+	/**
+	 * Checks if the {@link King} of a given {@link PieceColor} on this {@link Board} is in 
+	 * checkmate.
+	 * @param c the {@link PieceColor} to check if the given {@link King} is in checkmate.
+	 * @return true if the {@link King} matching the given {@link PieceColor} on this Board
+	 * is in checkmate.
+	 */
 	public boolean isInCheckmate(PieceColor c) {
 		Set<Piece> pieces = getPieces(c);
 		
