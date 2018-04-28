@@ -56,7 +56,7 @@ public abstract class Piece {
 		
 		return false;
 	}
-	
+
 	/**
 	 * Updates the {@link Location} of a Piece, removes the old Piece at the new {@link Location}.
 	 * @param location the new {@link Location} of this Piece.

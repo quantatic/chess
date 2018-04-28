@@ -13,6 +13,8 @@ import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
  */
 public class King extends Piece {
 	
+	private boolean hasMoved;
+	
 	/** Full constructor for King. Sets {@link Location}, {@link PieceColor}, 
 	 * {@link SpriteLookup}, and {@link Board} for this King.
 	 * @param location the {@link Location} of this King.
@@ -21,6 +23,7 @@ public class King extends Piece {
 	 */
 	public King(Location location, PieceColor color, Board board) {
 		super(location, color, SpriteLookup.KING, board);
+		hasMoved = false;
 	}
 
 	@Override
@@ -56,4 +59,127 @@ public class King extends Piece {
 		
 		return false;
 	}
+
+	/**
+	 * @return
+	 */
+	@Override
+	public Set<Location> getValidMoves() {
+		Set<Location> valid = super.getValidMoves();
+		if(canCastleKingSide()) {
+			valid.add(getBoard().getLocation(getRow(), 7));
+		}
+		
+		if(canCastleQueenSide()) {
+			valid.add(getBoard().getLocation(getRow(), 3));
+		}
+		return valid;
+	}
+
+	/**
+	 * @param l
+	 * @return
+	 */
+	@Override
+	public boolean attemptMove(Location l) {
+		boolean movedThisTurn;
+		if(l.getCol() == 7 && canCastleKingSide()) {
+			getBoard().getLocation(getRow(), 8).getOccupant().
+				attemptMove(getBoard().getLocation(getRow(), 6));
+			setLocation(getBoard().getLocation(getRow(), 7));
+			movedThisTurn = true;
+			
+		} else if(l.getCol() == 3 && canCastleQueenSide()) {
+			getBoard().getLocation(getRow(), 1).getOccupant().
+				attemptMove(getBoard().getLocation(getRow(), 4));
+			setLocation(getBoard().getLocation(getRow(), 3));
+			movedThisTurn = true;
+		} else {
+			movedThisTurn = super.attemptMove(l);
+		}
+		
+		
+		if(!hasMoved) {
+			hasMoved = movedThisTurn;
+		}
+		
+		return movedThisTurn;
+	}
+	
+	public boolean canCastleKingSide() {
+		if(hasMoved) {
+			return false;
+		}
+		
+		if(isInCheck()) {
+			return false;
+		}
+		
+		Piece toCastleWith = getBoard().getLocation(getRow(), 8).getOccupant();
+		
+		if(!(toCastleWith instanceof Rook) && ((Rook)toCastleWith).canCastle()) {
+			return false;
+		}
+		
+		int[] colsToCheck = {6, 7};
+		boolean canCastle = true;
+		Location initLocation = getLocation();
+		
+		for(int col : colsToCheck) {
+			Location toCheck = getBoard().getLocation(getRow(), col);
+			if(!toCheck.isEmpty()) {
+				canCastle = false;
+				break;
+			}
+			
+			setLocation(toCheck);
+			
+			if(isInCheck()) {
+				canCastle = false;
+				break;
+			}
+		}
+		
+		setLocation(initLocation);
+		return canCastle;
+	}
+	
+	public boolean canCastleQueenSide() {
+		if(hasMoved) {
+			return false;
+		}
+		
+		if(isInCheck()) {
+			return false;
+		}
+		
+		Piece toCastleWith = getBoard().getLocation(getRow(), 1).getOccupant();
+		
+		if(!(toCastleWith instanceof Rook) && ((Rook)toCastleWith).canCastle()) {
+			return false;
+		}
+		
+		int[] colsToCheck = {4, 3};
+		boolean canCastle = true;
+		Location initLocation = getLocation();
+		
+		for(int col : colsToCheck) {
+			Location toCheck = getBoard().getLocation(getRow(), col);
+			if(!toCheck.isEmpty()) {
+				canCastle = false;
+				return false;
+			}
+			
+			setLocation(toCheck);
+			
+			if(isInCheck()) {
+				canCastle = false;
+				break;
+			}
+		}
+		
+		setLocation(initLocation);
+		return canCastle;
+	}
+
 }
