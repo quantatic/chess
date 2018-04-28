@@ -61,37 +61,40 @@ public class King extends Piece {
 	}
 
 	/**
-	 * @return
+	 * Gets a {@link Set} of {@link Location} objects for all valid moves for this {@link King}.
+	 * @return a {@link Set} of {@link Location} objects for all valid moves for this {@link King}.
 	 */
 	@Override
 	public Set<Location> getValidMoves() {
 		Set<Location> valid = super.getValidMoves();
-		if(canCastleKingSide()) {
+		if(canCastle(true)) {
 			valid.add(getBoard().getLocation(getRow(), 7));
 		}
 		
-		if(canCastleQueenSide()) {
+		if(canCastle(false)) {
 			valid.add(getBoard().getLocation(getRow(), 3));
 		}
 		return valid;
 	}
 
 	/**
-	 * @param l
-	 * @return
+	 * Attempts to move this {@link King} to the passed {@link Location}, accounting for possible attempts
+	 * to castle. Updates whether or not this {@link King} has moved.
+	 * @param l the {@link Location} to attempt to move this {@link King} to.
+	 * @return true if the move was successful, false otherwise.
 	 */
 	@Override
 	public boolean attemptMove(Location l) {
 		boolean movedThisTurn;
-		if(l.getCol() == 7 && canCastleKingSide()) {
-			getBoard().getLocation(getRow(), 8).getOccupant().
-				attemptMove(getBoard().getLocation(getRow(), 6));
+		if(l.getCol() == 7 && canCastle(true)) {
+			getBoard().getLocation(getRow(), 8).getOccupant()
+				.attemptMove(getBoard().getLocation(getRow(), 6));
 			setLocation(getBoard().getLocation(getRow(), 7));
 			movedThisTurn = true;
 			
-		} else if(l.getCol() == 3 && canCastleQueenSide()) {
-			getBoard().getLocation(getRow(), 1).getOccupant().
-				attemptMove(getBoard().getLocation(getRow(), 4));
+		} else if(l.getCol() == 3 && canCastle(false)) {
+			getBoard().getLocation(getRow(), 1).getOccupant()
+				.attemptMove(getBoard().getLocation(getRow(), 4));
 			setLocation(getBoard().getLocation(getRow(), 3));
 			movedThisTurn = true;
 		} else {
@@ -106,7 +109,12 @@ public class King extends Piece {
 		return movedThisTurn;
 	}
 	
-	public boolean canCastleKingSide() {
+	/**
+	 * Finds out if this {@link King} can castle on a given side.
+	 * @param side The side to check castling on, true to check King-side, false to check Queen-side.
+	 * @return true if this {@link King} can castle on the given side, false otherwise.
+	 */
+	public boolean canCastle(boolean side) {
 		if(hasMoved) {
 			return false;
 		}
@@ -115,13 +123,15 @@ public class King extends Piece {
 			return false;
 		}
 		
-		Piece toCastleWith = getBoard().getLocation(getRow(), 8).getOccupant();
+		int rookLocation = side ? 8 : 1;
 		
-		if(!(toCastleWith instanceof Rook) && ((Rook)toCastleWith).canCastle()) {
+		Piece toCastleWith = getBoard().getLocation(getRow(), rookLocation).getOccupant();
+		
+		if(!(toCastleWith instanceof Rook && ((Rook)toCastleWith).canCastle())) {
 			return false;
 		}
 		
-		int[] colsToCheck = {6, 7};
+		int[] colsToCheck = side ? new int[]{6, 7} : new int[]{4, 3};
 		boolean canCastle = true;
 		Location initLocation = getLocation();
 		
@@ -130,44 +140,6 @@ public class King extends Piece {
 			if(!toCheck.isEmpty()) {
 				canCastle = false;
 				break;
-			}
-			
-			setLocation(toCheck);
-			
-			if(isInCheck()) {
-				canCastle = false;
-				break;
-			}
-		}
-		
-		setLocation(initLocation);
-		return canCastle;
-	}
-	
-	public boolean canCastleQueenSide() {
-		if(hasMoved) {
-			return false;
-		}
-		
-		if(isInCheck()) {
-			return false;
-		}
-		
-		Piece toCastleWith = getBoard().getLocation(getRow(), 1).getOccupant();
-		
-		if(!(toCastleWith instanceof Rook) && ((Rook)toCastleWith).canCastle()) {
-			return false;
-		}
-		
-		int[] colsToCheck = {4, 3};
-		boolean canCastle = true;
-		Location initLocation = getLocation();
-		
-		for(int col : colsToCheck) {
-			Location toCheck = getBoard().getLocation(getRow(), col);
-			if(!toCheck.isEmpty()) {
-				canCastle = false;
-				return false;
 			}
 			
 			setLocation(toCheck);

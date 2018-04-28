@@ -26,10 +26,10 @@ public class ChessboardDisplay extends JPanel {
 	private static final long serialVersionUID = 7675290973133689692L;
 
 	/** The width of a single square on the drawn {@link Board}. */
-	public static final int SQUARE_WIDTH = 150;
+	public static final int SQUARE_WIDTH = 180;
 	
 	/** The height of a single square on the drawn {@link Board}. */
-	public static final int SQUARE_HEIGHT = 150;
+	public static final int SQUARE_HEIGHT = 180;
 	
 	/** The {@link Board} which this ChessboardDisplay will render. */
 	private Board board;
