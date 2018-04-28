@@ -7,7 +7,18 @@ import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
-public class Pawn extends Piece{
+/**
+ * Represents a {@link Pawn} piece which may inhabit a {@link Board}.
+ * @author Aidan Beggs
+ */
+public class Pawn extends Piece {
+	
+	/** Full constructor for Pawn. Sets {@link Location}, {@link PieceColor}, 
+	 * {@link SpriteLookup}, and {@link Board} for this Pawn.
+	 * @param location the {@link Location} of this Pawn.
+	 * @param color the {@link PieceColor} of this Pawn.
+	 * @param board the {@link Board} this Pawn inhabits.
+	 */
 	public Pawn(Location location, PieceColor color, Board board) {
 		super(location, color, SpriteLookup.PAWN, board);
 	}

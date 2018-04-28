@@ -11,18 +11,20 @@ import edu.ncsu.awbeggs.chess.model.piece.Piece;
 public class Location extends Observable {
 	private Piece occupant;
 	
-	private Board board;
-	
 	/** The row of this Location on the {@link Board}. */
 	private int row;
 	
 	/** The column of this Location on the {@link Board}. */
 	private int col;
 	
-	public Location(int row, int col, Board board) {
+	/**
+	 * Full constructor for a Location, with a row and a column.
+	 * @param row the row of this Location.
+	 * @param col the column of this Location.
+	 */
+	public Location(int row, int col) {
 		this.row = row;
 		this.col = col;
-		this.board = board;
 	}
 	
 	/**
@@ -42,22 +44,43 @@ public class Location extends Observable {
 		return oldOccupant;
 	}
 	
+	/**
+	 * Gets whether this Location is empty.
+	 * @return true if this Location is empty.
+	 */
 	public boolean isEmpty() {
 		return this.occupant == null;
 	}
 	
+	/**
+	 * Gets the row of this Location.
+	 * @return the row of this Location.
+	 */
 	public int getRow() {
 		return this.row;
 	}
 	
+	/**
+	 * Gets the column of this Location.
+	 * @return the column of this Location.
+	 */
 	public int getCol() {
 		return this.col;
 	}
 	
+	/**
+	 * Gets the {@link Piece} that occupies this Location.
+	 * @return the {@link Piece} that occupies this Location.
+	 */
 	public Piece getOccupant() {
 		return this.occupant;
 	}
 	
+	/**
+	 * Gets a String representation of this Location, including the {@link Piece} that occupies
+	 * this Location, if any, and the row and column of this Location.
+	 * @return a String representation of this Location.
+	 */
 	public String toString() {
 		String result = "";
 		if(occupant != null) {

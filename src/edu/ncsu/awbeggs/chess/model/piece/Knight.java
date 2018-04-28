@@ -7,7 +7,18 @@ import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
-public class Knight extends Piece{
+/**
+ * Represents a Knight {@link Piece} which may exist on a {@link Board}.
+ * @author Aidan Beggs
+ */
+public class Knight extends Piece {
+	
+	/** Full constructor for Knight. Sets {@link Location}, {@link PieceColor}, 
+	 * {@link SpriteLookup}, and {@link Board} for this Knight.
+	 * @param location the {@link Location} of this Knight.
+	 * @param color the {@link PieceColor} of this Knight.
+	 * @param board the {@link Board} this Knight inhabits.
+	 */
 	public Knight(Location location, PieceColor color, Board board) {
 		super(location, color, SpriteLookup.KNIGHT, board);
 	}

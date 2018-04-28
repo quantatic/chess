@@ -4,11 +4,13 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import edu.ncsu.awbeggs.chess.model.board.Board;
+
 /**
  * The overall GUI window for displaying the {@link Board}.
  * @author Aidan Beggs
  */
-public class ChessGUI extends JFrame{
+public class ChessGUI extends JFrame {
 	
 	private static final long serialVersionUID = -4062699211127160865L;
 	

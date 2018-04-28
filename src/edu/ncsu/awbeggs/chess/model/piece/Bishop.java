@@ -8,10 +8,10 @@ import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 /**
- * Represents a Bishop, which extends {@links Piece}.
+ * Represents a Bishop, which extends {@link Piece}.
  * @author Aidan Beggs
  */
-public class Bishop extends Piece{
+public class Bishop extends Piece {
 
 	/** Full constructor for Bishop. Sets {@link Location}, {@link PieceColor}, 
 	 * {@link SpriteLookup}, and {@link Board} for this Bishop.

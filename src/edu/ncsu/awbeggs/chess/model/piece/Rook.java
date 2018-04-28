@@ -7,15 +7,25 @@ import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
-public class Rook extends Piece{
+/**
+ * Represents a rook {@link Piece}, which may exist on a {@link Board}.
+ * @author Aidan Beggs
+ */
+public class Rook extends Piece {
 
+	/** Full constructor for Rook. Sets {@link Location}, {@link PieceColor}, 
+	 * {@link SpriteLookup}, and {@link Board} for this Rook.
+	 * @param location the {@link Location} of this Rook.
+	 * @param color the {@link PieceColor} of this Rook.
+	 * @param board the {@link Board} this Rook inhabits.
+	 */
 	public Rook(Location location, PieceColor color, Board board) {
 		super(location, color, SpriteLookup.ROOK, board);
 	}
 
-	public Set<Location> getValidMovesNoCheck() {
+	@Override
+	protected Set<Location> getValidMovesNoCheck() {
 		Set<Location> validMoves = new HashSet<>();
-		Location l = getLocation();
 		
 		for(int rowMod : new int[] {-1, 0, 1}) {
 			for(int colMod : new int[] {-1, 0, 1}) {

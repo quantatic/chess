@@ -37,7 +37,7 @@ public class Board {
 		
 		for(int row = 0; row < BOARD_HEIGHT; row++) {
 			for(int col = 0; col < BOARD_WIDTH; col++) {
-				locations[row][col] = new Location(row + 1, col + 1, this);
+				locations[row][col] = new Location(row + 1, col + 1);
 			}
 		}
 		for(int col = 1; col <= BOARD_WIDTH; col++) {
@@ -153,6 +153,12 @@ public class Board {
 		return true;
 	}
 	
+	/**
+	 * Gets the {@link Location} at this board at a given row and column.
+	 * @param row the row to look for a {@link Location} at.
+	 * @param col the column to look for a {@link Location} at.
+	 * @return the {@link Location} found at the given row and column if found, otherwise null.
+	 */
 	public Location getLocation(int row, int col) {
 		if(row > 0 && row <= BOARD_HEIGHT && col > 0 && col <= BOARD_WIDTH) {
 			return locations[row - 1][col - 1];
@@ -161,14 +167,26 @@ public class Board {
 		return null;
 	}
 	
+	/**
+	 * Gets the width of this board.
+	 * @return the width of this board.
+	 */
 	public int getWidth() {
 		return BOARD_WIDTH;
 	}
 	
+	/**
+	 * Gets the height of this Board.
+	 * @return the height of this Board.
+	 */
 	public int getHeight() {
 		return BOARD_HEIGHT;
 	}
 	
+	/**
+	 * Gets the {@link PieceColor} associated with the player who's current turn it is.
+	 * @return the {@link PieceColor} associated with the player who's current turn it is.
+	 */
 	public PieceColor getCurrentTurn() {
 		return this.currentTurn;
 	}

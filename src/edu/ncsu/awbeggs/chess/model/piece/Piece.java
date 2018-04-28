@@ -12,7 +12,7 @@ import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
  * Represents an arbitrary Piece, which can be placed on a chessboard.
  * @author Aidan Beggs
  */
-public abstract class Piece{
+public abstract class Piece {
 
 	/** The {@link Location} of this Piece. */
 	private Location location;
@@ -115,22 +115,42 @@ public abstract class Piece{
 		return valid;
 	}
 	
+	/**
+	 * Gets the {@link Location} of this Piece.
+ 	 * @return the {@link Location} of this Piece.
+	 */
 	public Location getLocation() {
 		return this.location;
 	}
 	
+	/**
+	 * Gets the row of the {@link Board} this Piece is on.
+	 * @return the row of the {@link Board} this Piece is on.
+	 */
 	public int getRow() {
 		return getLocation().getRow();
 	}
 	
+	/**
+	 * Gets the column of the {@link Board} this Piece is on.
+	 * @return the column of the {@link Board} this Piece is on.
+	 */
 	public int getCol() {
 		return getLocation().getCol();
 	}
 	
+	/**
+	 * Gets the {@link PieceColor} representing the color and side of this Piece.
+	 * @return the {@link PieceColor} representing the color and side of this Piece.
+	 */
 	public PieceColor getColor() {
 		return this.color;
 	}
 	
+	/**
+	 * Gets a String representation of this Piece.
+	 * @return a String representation of this Piece.
+	 */
 	public String toString() {
 		return lookup.lookupSpriteString(getColor());
 	}
@@ -144,6 +164,10 @@ public abstract class Piece{
 		return lookup.lookupSpriteImage(getColor());
 	}
 	
+	/**
+	 * Gets the {@link Board} that this Piece inhabits.
+	 * @return the {@link Board} that this Piece inhabits.
+	 */
 	protected Board getBoard() {
 		return this.board;
 	}

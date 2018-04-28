@@ -21,7 +21,7 @@ import edu.ncsu.awbeggs.chess.model.piece.King;
  * Handles the work of displaying the information contained in a {@link Board}.
  * @author Aidan Beggs
  */
-public class ChessboardDisplay extends JPanel{
+public class ChessboardDisplay extends JPanel {
 	
 	private static final long serialVersionUID = 7675290973133689692L;
 
@@ -34,6 +34,10 @@ public class ChessboardDisplay extends JPanel{
 	/** The {@link Board} which this ChessboardDisplay will render. */
 	private Board board;
 	
+	/**
+	 * Full constructor for a ChessboardDisplay, takes a {@link Board} that it will render.
+	 * @param board the {@link Board} that this ChessboardDisplay will render.
+	 */
 	public ChessboardDisplay(Board board) {
 		this.board = board;
 		
@@ -55,6 +59,7 @@ public class ChessboardDisplay extends JPanel{
 				board.updateSelected(board.getLocation(8 - (e.getY() / SQUARE_HEIGHT),
 						1 + (e.getX() / SQUARE_WIDTH)));
 				repaint();
+				
 				if(board.isInCheckmate(board.getCurrentTurn())) {
 					JOptionPane.showMessageDialog(null, board.getCurrentTurn() + " has been checkmated!", "CHECKMATE!", JOptionPane.OK_OPTION);
 				}
@@ -73,12 +78,11 @@ public class ChessboardDisplay extends JPanel{
 						SQUARE_WIDTH, SQUARE_HEIGHT);
 				
 				Location currentLocation = board.getLocation(9 - renderRow, renderCol);
-				if(currentLocation.getOccupant() instanceof King) {
-					if(((King) currentLocation.getOccupant()).isInCheck()) {
-						g2d.setColor(new Color(255, 0, 0, 200));
-						g2d.fillRect((renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, 
-								SQUARE_WIDTH, SQUARE_HEIGHT);
-					}
+				if(currentLocation.getOccupant() instanceof King 
+						&& ((King) currentLocation.getOccupant()).isInCheck()) {
+					g2d.setColor(new Color(255, 0, 0, 200));
+					g2d.fillRect((renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, 
+							SQUARE_WIDTH, SQUARE_HEIGHT);
 				}
 				
 				if(board.getSelected() != null && board.getSelected().getOccupant() != null
@@ -98,11 +102,12 @@ public class ChessboardDisplay extends JPanel{
 		}
 	}
 	
-	public String toString() {
-		return board.toString();
-	}
-	
-	
+	/**
+	 * Helper message to resize a {@link BufferedImage} to fit into a single square of the 
+	 * {@link Board} that this will render.
+	 * @param in the input {@link BufferedImage} to resize.
+	 * @return the resized {@link BufferedImage}.
+	 */
 	public static BufferedImage resizeToFit(BufferedImage in) {
 		Image tmp = in.getScaledInstance(SQUARE_WIDTH, SQUARE_HEIGHT, Image.SCALE_DEFAULT);
 		BufferedImage resized = new BufferedImage(SQUARE_WIDTH, SQUARE_HEIGHT, 

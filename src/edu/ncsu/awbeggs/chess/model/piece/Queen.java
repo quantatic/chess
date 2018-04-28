@@ -7,15 +7,25 @@ import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
+/**
+ * Represents a Queen {@link Piece}, which may exist on a {@link Board}.
+ * @author Aidan Beggs
+ */
 public class Queen extends Piece {
 
+	/** Full constructor for Queen. Sets {@link Location}, {@link PieceColor}, 
+	 * {@link SpriteLookup}, and {@link Board} for this Queen.
+	 * @param location the {@link Location} of this Queen.
+	 * @param color the {@link PieceColor} of this Queen.
+	 * @param board the {@link Board} this Queen inhabits.
+	 */
 	public Queen(Location location, PieceColor color, Board board) {
 		super(location, color, SpriteLookup.QUEEN, board);
 	}
-
-	public Set<Location> getValidMovesNoCheck() {
+	
+	@Override
+	protected Set<Location> getValidMovesNoCheck() {
 		Set<Location> validMoves = new HashSet<>();
-		Location l = getLocation();
 		
 		for(int rowMod : new int[] {-1, 0, 1}) {
 			for(int colMod : new int[] {-1, 0, 1}) {
