@@ -16,24 +16,23 @@ public class Pawn extends Piece{
 	public Set<Location> getValidMovesNoCheck() {
 		Set<Location> valid = new HashSet<>();
 		int direction = getColor() == PieceColor.WHITE ? 1 : -1;
-		Location l = getLocation();
 		
-		Location tmpNeighbor = l.getNeighbor(direction, 0);
-		if(tmpNeighbor != null && tmpNeighbor.isEmpty()) {
-			valid.add(tmpNeighbor);
-			tmpNeighbor = l.getNeighbor(direction * 2, 0);
-			if(tmpNeighbor != null 
-					&& (direction == 1 ? (getLocation().getRow() == 2) : (getLocation().getRow() == 7))
-					&& tmpNeighbor.isEmpty()) {
-				valid.add(tmpNeighbor);
+		Location checkLocation = getBoard().getLocation(getRow() + direction, getCol());
+		if(checkLocation != null && checkLocation.isEmpty()) {
+			valid.add(checkLocation);
+			checkLocation = getBoard().getLocation(getRow() + (direction * 2), getCol());
+			if(checkLocation != null 
+					&& (direction == 1 ? (getRow() == 2) : (getRow() == 7))
+					&& checkLocation.isEmpty()) {
+				valid.add(checkLocation);
 			}
 		}
 		
 		for(int colOffset : new int[] {-1, 1}) {
-			tmpNeighbor = l.getNeighbor(direction, colOffset);
-			if(tmpNeighbor != null && tmpNeighbor.getOccupant() != null 
-					&& tmpNeighbor.getOccupant().getColor() != getColor()) {
-				valid.add(tmpNeighbor);
+			checkLocation = getBoard().getLocation(getRow() + direction, getCol() + colOffset);
+			if(checkLocation != null && checkLocation.getOccupant() != null 
+					&& checkLocation.getOccupant().getColor() != getColor()) {
+				valid.add(checkLocation);
 			}
 		}
 		return valid;

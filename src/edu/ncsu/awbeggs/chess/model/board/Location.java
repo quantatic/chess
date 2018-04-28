@@ -42,10 +42,6 @@ public class Location extends Observable {
 		return oldOccupant;
 	}
 	
-	public Location getNeighbor(int rowOffset, int colOffset) {
-		return board.getLocation(getRow() + rowOffset, getCol() + colOffset);
-	}
-	
 	public boolean isEmpty() {
 		return this.occupant == null;
 	}
@@ -67,8 +63,10 @@ public class Location extends Observable {
 		if(occupant != null) {
 			result += occupant.toString();
 		} else {
-			result += "";
+			result += "Location";
 		}
+		
+		result += " at row " + getRow() + ", col " + getCol();
 		
 		return result;
 	}

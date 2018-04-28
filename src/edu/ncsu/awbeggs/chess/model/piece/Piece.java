@@ -119,6 +119,14 @@ public abstract class Piece{
 		return this.location;
 	}
 	
+	public int getRow() {
+		return getLocation().getRow();
+	}
+	
+	public int getCol() {
+		return getLocation().getCol();
+	}
+	
 	public PieceColor getColor() {
 		return this.color;
 	}

@@ -21,12 +21,14 @@ public class Queen extends Piece {
 			for(int colMod : new int[] {-1, 0, 1}) {
 				int tmpOffsetRow = rowMod;
 				int tmpOffsetCol = colMod;
-				Location tmpLocation = l.getNeighbor(tmpOffsetRow, tmpOffsetCol);
+				Location tmpLocation = getBoard().getLocation(getRow() + tmpOffsetRow, 
+						getCol() + tmpOffsetCol);
 				while(tmpLocation != null && tmpLocation.isEmpty()) {
 					validMoves.add(tmpLocation);
 					tmpOffsetRow += rowMod;
 					tmpOffsetCol += colMod;
-					tmpLocation = l.getNeighbor(tmpOffsetRow, tmpOffsetCol);
+					tmpLocation = getBoard().getLocation(getRow() + tmpOffsetRow, 
+							getCol() + tmpOffsetCol);
 				}
 				
 				if(tmpLocation != null && tmpLocation.getOccupant().getColor() != getColor()) {

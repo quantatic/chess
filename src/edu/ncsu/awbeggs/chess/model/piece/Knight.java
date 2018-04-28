@@ -16,16 +16,16 @@ public class Knight extends Piece{
 	public Set<Location> getValidMovesNoCheck() {
 		Set<Location> validMoves = new HashSet<Location>();
 		
-		Location l = getLocation();
-		
 		for(int rowMod : new int[] {-1, 1}) {
 			for(int colMod : new int[] {-1, 1}) {
 				for(int row : new int[] {1, 2}) {
-					Location tmpLocation = l.getNeighbor(row * rowMod, (3 - row) * colMod);
-					if(tmpLocation != null 
-							&& (tmpLocation.isEmpty() 
-									|| (tmpLocation.getOccupant().getColor() != getColor()))) {
-						validMoves.add(tmpLocation);
+					Location checkLocation = getBoard().getLocation(getRow() + (row * rowMod),
+							getCol() + ((3 - row) * colMod));
+					
+					if(checkLocation != null 
+							&& (checkLocation.isEmpty() 
+									|| (checkLocation.getOccupant().getColor() != getColor()))) {
+						validMoves.add(checkLocation);
 					}
 				}
 			}

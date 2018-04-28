@@ -20,7 +20,9 @@ public class King extends Piece{
 		
 		for(int rowOffset : new int[] {-1, 0, 1}) {
 			for(int colOffset : new int[] {-1, 0, 1}) {
-				Location tmpLocation = l.getNeighbor(rowOffset, colOffset);
+				Location tmpLocation = getBoard().getLocation(getRow() + colOffset, 
+						getCol() + rowOffset);
+				
 				if(tmpLocation != null && (tmpLocation.isEmpty() 
 						|| tmpLocation.getOccupant().getColor() != getColor())) {
 					valid.add(tmpLocation);
