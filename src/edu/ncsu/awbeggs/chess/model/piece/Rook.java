@@ -12,8 +12,6 @@ import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
  * @author Aidan Beggs
  */
 public class Rook extends Piece {
-	
-	private boolean hasMoved;
 
 	/** Full constructor for Rook. Sets {@link Location}, {@link PieceColor}, 
 	 * {@link SpriteLookup}, and {@link Board} for this Rook.
@@ -23,7 +21,6 @@ public class Rook extends Piece {
 	 */
 	public Rook(Location location, PieceColor color, Board board) {
 		super(location, color, SpriteLookup.ROOK, board);
-		hasMoved = false;
 	}
 
 	@Override
@@ -64,26 +61,6 @@ public class Rook extends Piece {
 	 */
 	@Override
 	public boolean attemptMove(Location l) {
-		boolean movedThisTurn = super.attemptMove(l);
-		if(!hasMoved) {
-			hasMoved = movedThisTurn;
-		}
-		
-		return movedThisTurn;
+		return super.attemptMove(l);
 	}
-	
-	/**
-	 * Calculates whether or not this {@link Rook} can castle with its associated {@link King}.
-	 * @return whether or not this {@link Rook} can castle with its associated {@link King}.
-	 */
-	public boolean canCastle() {
-		if(hasMoved) { 
-			return false; //if we've already moved, we cannot castle
-		}
-		
-		int colTo = (getCol() == 8) ? 6 : 4;
-		
-		return getValidMoves().contains(getBoard().getLocation(getRow(), colTo)); //return whether or not we can move to the location we will end up in
-	}
-	
 }

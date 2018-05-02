@@ -82,16 +82,7 @@ public class Location extends Observable {
 	 * @return a String representation of this Location.
 	 */
 	public String toString() {
-		String result = "";
-		if(occupant != null) {
-			result += occupant.toString();
-		} else {
-			result += "Location";
-		}
-		
-		result += " at row " + getRow() + ", col " + getCol();
-		
-		return result;
+		return "" + (getCol() + 'A' - 1) + (getRow());
 	}
 	
 }

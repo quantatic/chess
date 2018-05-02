@@ -2,6 +2,7 @@ package edu.ncsu.awbeggs.chess.model.board;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 import edu.ncsu.awbeggs.chess.model.piece.Bishop;
 import edu.ncsu.awbeggs.chess.model.piece.King;
@@ -29,11 +30,14 @@ public class Board {
 	
 	private PieceColor currentTurn;
 	
+	private Stack<Move> moves;
+	
 	/**
 	 * Creates a new board, and fills it with the correct number of empty locations.
 	 */
 	public Board() {
 		locations = new Location[BOARD_HEIGHT][BOARD_WIDTH];
+		moves = new Stack<>();
 		
 		for(int row = 0; row < BOARD_HEIGHT; row++) {
 			for(int col = 0; col < BOARD_WIDTH; col++) {
@@ -72,6 +76,29 @@ public class Board {
 	 */
 	public Location getSelected() {
 		return selectedSpace;
+	}
+	
+	/**
+	 * Attempts to make a move on this {@link Board} from the starting {@link Location} to
+	 * the ending {@link Location}.
+	 * @param start the starting {@link Location} for this {@link Move}.
+	 * @param end the ending {@link Location} for this {@link Move}.
+	 * @return true if making this {@link Move} in the current state of the {@link Board}
+	 * is legal, and the {@link Move} was made successfully.
+	 */
+	public boolean attemptMove(Location start, Location end) {
+		if(start == null || start.getOccupant() == null) {
+			return false;
+		}
+		
+		Piece toMove = start.getOccupant();
+		if(toMove.attemptMove(end)) {
+			moves.push(new Move(start, end, toMove));
+			toMove.incrementMovesMade();
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**

@@ -25,6 +25,9 @@ public abstract class Piece {
 	
 	/** The {@link Board} that this Piece inhabits. */
 	private Board board;
+
+	/** The number of moves that this Piece has made. */
+	private int movesMade;
 	
 	/** Full constructor for Piece. Sets {@link Location}, {@link PieceColor}, 
 	 * {@link SpriteLookup}, and {@link Board} for this Piece.
@@ -38,6 +41,7 @@ public abstract class Piece {
 		setColor(color);
 		setSpriteLookup(lookup);
 		setBoard(board);
+		setMovesMade(0);
 	}
 	
 	/**
@@ -51,6 +55,7 @@ public abstract class Piece {
 		
 		if(valid.contains(l)) {
 			setLocation(l);
+			incrementMovesMade();
 			return true;
 		}
 		
@@ -182,5 +187,25 @@ public abstract class Piece {
 	
 	private void setBoard(Board b) {
 		this.board = b;
+	}
+	
+	private void setMovesMade(int m) {
+		this.movesMade = m;
+	}
+	
+	public boolean hasMoved() {
+		return movesMade > 0;
+	}
+	
+	public void incrementMovesMade() {
+		movesMade++;
+	}
+	
+	public void decrementMovesMade() {
+		if(movesMade <= 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		movesMade--;
 	}
 }
