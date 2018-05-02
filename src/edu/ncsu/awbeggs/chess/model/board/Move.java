@@ -1,5 +1,6 @@
 package edu.ncsu.awbeggs.chess.model.board;
 
+import edu.ncsu.awbeggs.chess.model.piece.Pawn;
 import edu.ncsu.awbeggs.chess.model.piece.Piece;
 
 /**
@@ -14,6 +15,8 @@ public class Move {
 	
 	private Piece moved;
 	
+	private Piece captured;
+	
 	/**
 	 * Creates a new {@link Move} Object, with a starting location, an ending location, and the
 	 * {@link Piece} that was moved.
@@ -25,6 +28,7 @@ public class Move {
 		this.start = start;
 		this.end = end;
 		this.moved = moved;
+		this.captured = end.getOccupant();
 	}
 
 	/**
@@ -51,5 +55,22 @@ public class Move {
 		return moved;
 	}
 	
-	
+	/**
+	 * Gets the {@link Piece} captured during this move, if any.
+	 * @return the captured piece.
+	 */
+	public Piece getCaptured() {
+		return captured;
+	}
+
+	/**
+	 * Gets a String representation of this {@link Move}.
+	 * @return a String representation of this {@link Move}.
+	 */
+	@Override
+	public String toString() {
+		String movedString = (moved instanceof Pawn) ? "" : moved.toString();
+		String captureString = (captured == null) ? "" : "x";
+		return movedString + captureString + end;
+	}
 }

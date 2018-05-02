@@ -160,7 +160,7 @@ public class King extends Piece {
 		toMove.setLocation(getBoard().getLocation(getRow(), rookTo));
 		toMove.incrementMovesMade();
 		
-		setLocation(getBoard().getLocation(getRow(), 7));
+		setLocation(getBoard().getLocation(getRow(), kingTo));
 		incrementMovesMade();
 		
 		return true;

@@ -34,8 +34,10 @@ public class Board {
 	
 	/**
 	 * Creates a new board, and fills it with the correct number of empty locations.
+	 * @param initBoard true if the {@link Board} should be filled up with the default starting
+	 * {@link Piece} objects.
 	 */
-	public Board() {
+	public Board(boolean initBoard) {
 		locations = new Location[BOARD_HEIGHT][BOARD_WIDTH];
 		moves = new Stack<>();
 		
@@ -44,28 +46,31 @@ public class Board {
 				locations[row][col] = new Location(row + 1, col + 1);
 			}
 		}
-		for(int col = 1; col <= BOARD_WIDTH; col++) {
-			new Pawn(getLocation(2, col), PieceColor.WHITE, this);
-			new Pawn(getLocation(7, col), PieceColor.BLACK, this);
+		
+		if(initBoard) {
+			for(int col = 1; col <= BOARD_WIDTH; col++) {
+				new Pawn(getLocation(2, col), PieceColor.WHITE, this);
+				new Pawn(getLocation(7, col), PieceColor.BLACK, this);
+			}
+			
+			new Rook(getLocation(1, 1), PieceColor.WHITE, this);
+			new Knight(getLocation(1, 2), PieceColor.WHITE, this);
+			new Bishop(getLocation(1, 3), PieceColor.WHITE, this);
+			new Queen(getLocation(1, 4), PieceColor.WHITE, this);
+			new King(getLocation(1, 5), PieceColor.WHITE, this);
+			new Bishop(getLocation(1, 6), PieceColor.WHITE, this);
+			new Knight(getLocation(1, 7), PieceColor.WHITE, this);
+			new Rook(getLocation(1, 8), PieceColor.WHITE, this);
+			
+			new Rook(getLocation(8, 1), PieceColor.BLACK, this);
+			new Knight(getLocation(8, 2), PieceColor.BLACK, this);
+			new Bishop(getLocation(8, 3), PieceColor.BLACK, this);
+			new Queen(getLocation(8, 4), PieceColor.BLACK, this);
+			new King(getLocation(8, 5), PieceColor.BLACK, this);
+			new Bishop(getLocation(8, 6), PieceColor.BLACK, this);
+			new Knight(getLocation(8, 7), PieceColor.BLACK, this);
+			new Rook(getLocation(8, 8), PieceColor.BLACK, this);
 		}
-		
-		new Rook(getLocation(1, 1), PieceColor.WHITE, this);
-		new Knight(getLocation(1, 2), PieceColor.WHITE, this);
-		new Bishop(getLocation(1, 3), PieceColor.WHITE, this);
-		new Queen(getLocation(1, 4), PieceColor.WHITE, this);
-		new King(getLocation(1, 5), PieceColor.WHITE, this);
-		new Bishop(getLocation(1, 6), PieceColor.WHITE, this);
-		new Knight(getLocation(1, 7), PieceColor.WHITE, this);
-		new Rook(getLocation(1, 8), PieceColor.WHITE, this);
-		
-		new Rook(getLocation(8, 1), PieceColor.BLACK, this);
-		new Knight(getLocation(8, 2), PieceColor.BLACK, this);
-		new Bishop(getLocation(8, 3), PieceColor.BLACK, this);
-		new Queen(getLocation(8, 4), PieceColor.BLACK, this);
-		new King(getLocation(8, 5), PieceColor.BLACK, this);
-		new Bishop(getLocation(8, 6), PieceColor.BLACK, this);
-		new Knight(getLocation(8, 7), PieceColor.BLACK, this);
-		new Rook(getLocation(8, 8), PieceColor.BLACK, this);
 		
 		currentTurn = PieceColor.WHITE;
 	}
@@ -92,8 +97,9 @@ public class Board {
 		}
 		
 		Piece toMove = start.getOccupant();
+		Move moveAttept = new Move(start, end, toMove);
 		if(toMove.attemptMove(end)) {
-			moves.push(new Move(start, end, toMove));
+			moves.push(moveAttept);
 			toMove.incrementMovesMade();
 			return true;
 		}
@@ -108,7 +114,8 @@ public class Board {
 	 */
 	public void updateSelected(Location selected) {
 		if(this.selectedSpace != null && this.selectedSpace.getOccupant() != null
-				&& this.selectedSpace.getOccupant().attemptMove(selected)) {
+				&& attemptMove(this.selectedSpace, selected)) {
+			System.out.println(getMovesString());
 			this.selectedSpace = null;
 			this.currentTurn = (this.currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 		} else if(this.selectedSpace != selected 
@@ -117,6 +124,7 @@ public class Board {
 				&& selected.getOccupant().getValidMoves().size() > 0) {
 			this.selectedSpace = selected;
 		} else {
+			undoLastMove();
 			this.selectedSpace = null;
 		}
 	}
@@ -181,6 +189,24 @@ public class Board {
 	}
 	
 	/**
+	 * Undoes the last {@link Move} made on this Board.
+	 */
+	public void undoLastMove() {
+		if(moves.size() <= 0) {
+			return;
+		}
+		
+		Move lastMove = moves.pop();
+		
+		Piece moved = lastMove.getMoved();
+		lastMove.getStart().setOccupant(moved);
+		moved.decrementMovesMade();
+		
+		lastMove.getEnd().setOccupant(lastMove.getCaptured());
+		currentTurn = (getCurrentTurn() == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
+	}
+	
+	/**
 	 * Gets the {@link Location} at this board at a given row and column.
 	 * @param row the row to look for a {@link Location} at.
 	 * @param col the column to look for a {@link Location} at.
@@ -233,6 +259,26 @@ public class Board {
 			}
 			result += "\n";
 			result += horizontal;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Gets a String representation of any {@link Move} made on this {@link Board}.
+	 * @return a String representation of any {@link Move} made on this {@link Board}.
+	 */
+	public String getMovesString() {
+		Stack<Move> tmp = new Stack<>();
+		String result = "";
+		int size = moves.size();
+		for(int i = size; i > 0; i--) {
+			result = i + ") " + moves.peek() + "\n" + result;
+			tmp.push(moves.pop());
+		}
+		
+		while(tmp.size() > 0) {
+			moves.push(tmp.pop());
 		}
 		
 		return result;

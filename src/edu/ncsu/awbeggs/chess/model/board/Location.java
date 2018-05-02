@@ -82,7 +82,7 @@ public class Location extends Observable {
 	 * @return a String representation of this Location.
 	 */
 	public String toString() {
-		return "" + (getCol() + 'A' - 1) + (getRow());
+		return "" + ((char)('a' + getCol() - 1)) + (getRow());
 	}
 	
 }

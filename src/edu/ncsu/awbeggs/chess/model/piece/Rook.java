@@ -53,14 +53,4 @@ public class Rook extends Piece {
 		
 		return validMoves;
 	}
-
-	/**Attempts to move this {@link Rook} to the passed {@link Location}, updates whether or not this 
-	 * {@link Rook} has moved.
-	 * @param l the {@link Location} to attempt to move this {@link Rook} to.
-	 * @return true if the move was successful, false otherwise.
-	 */
-	@Override
-	public boolean attemptMove(Location l) {
-		return super.attemptMove(l);
-	}
 }

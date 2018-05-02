@@ -193,14 +193,24 @@ public abstract class Piece {
 		this.movesMade = m;
 	}
 	
+	/**
+	 * Gets whether this {@link Piece} has been moved or not.
+	 * @return whether this {@link Piece} has been moved or not.
+	 */
 	public boolean hasMoved() {
 		return movesMade > 0;
 	}
 	
+	/**
+	 * Increase the amount of moves this {@link Piece} has made by 1.
+	 */
 	public void incrementMovesMade() {
 		movesMade++;
 	}
 	
+	/**
+	 * Decrease the amount of moves this {@link Piece} has made by 1.
+	 */
 	public void decrementMovesMade() {
 		if(movesMade <= 0) {
 			throw new IllegalArgumentException();

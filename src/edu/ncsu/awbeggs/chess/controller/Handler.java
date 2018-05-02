@@ -17,7 +17,7 @@ public class Handler {
 	 * @param args command line arguments passed to the program.
 	 */
 	public static void main(String[] args) {
-		Board board = new Board();
+		Board board = new Board(true);
 		ChessboardDisplay c = new ChessboardDisplay(board);
 		
 		
