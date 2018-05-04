@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Move;
 import edu.ncsu.awbeggs.chess.model.piece.King;
 
 /**
@@ -65,6 +66,8 @@ public class ChessboardDisplay extends JPanel {
 				}
 			}
 		});
+		
+		
 	}
 	
 	@Override
@@ -85,11 +88,13 @@ public class ChessboardDisplay extends JPanel {
 							SQUARE_WIDTH, SQUARE_HEIGHT);
 				}
 				
-				if(board.getSelected() != null && board.getSelected().getOccupant() != null
-						&& board.getSelected().getOccupant().getValidMoves().contains(currentLocation)) {
-					g2d.setColor(new Color(0, 255, 0, 200));
-					g2d.fillRect((renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, 
-							SQUARE_WIDTH, SQUARE_HEIGHT);
+				if(board.getSelected() != null && board.getSelected().getOccupant() != null) {
+					Move currentMove = board.getSelected().getOccupant().getMoveTo(currentLocation);
+					if(board.getSelected().getOccupant().getValidMoves().contains(currentMove)) {
+						g2d.setColor(new Color(0, 255, 0, 200));
+						g2d.fillRect((renderCol - 1) * SQUARE_WIDTH, (renderRow - 1) * SQUARE_HEIGHT, 
+								SQUARE_WIDTH, SQUARE_HEIGHT);
+					}
 				}
 				
 				if(currentLocation.getOccupant() != null) {

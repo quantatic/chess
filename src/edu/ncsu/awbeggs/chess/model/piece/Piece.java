@@ -6,6 +6,7 @@ import java.util.Set;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Move;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 /**
@@ -22,9 +23,6 @@ public abstract class Piece {
 	
 	/** A {@link SpriteLookup used to look up representations of this Piece. */
 	private SpriteLookup lookup;
-	
-	/** The {@link Board} that this Piece inhabits. */
-	private Board board;
 
 	/** The number of moves that this Piece has made. */
 	private int movesMade;
@@ -34,32 +32,26 @@ public abstract class Piece {
 	 * @param location the {@link Location} of this Piece.
 	 * @param color the {@link PieceColor} of this Piece.
 	 * @param lookup the {@link SpriteLookup} for this Piece.
-	 * @param board the {@link Board} this Piece inhabits.
 	 */
-	public Piece(Location location, PieceColor color, SpriteLookup lookup, Board board) {
+	public Piece(Location location, PieceColor color, SpriteLookup lookup) {
 		setLocation(location);
 		setColor(color);
 		setSpriteLookup(lookup);
-		setBoard(board);
 		setMovesMade(0);
 	}
 	
-	/**
-	 * Attempts to move this Piece to another {@link Location}.
-	 * @param l the new {@link Location} to move to.
-	 * @return true if a move to the passed {@link Location} is valid and the move was completed
-	 * successfully.
-	 */
-	public boolean attemptMove(Location l) {
-		Set<Location> valid = getValidMoves();
-		
-		if(valid.contains(l)) {
-			setLocation(l);
-			incrementMovesMade();
-			return true;
+	public boolean isValidMove(Move m) {
+		if(m == null || m.getMoved() != this) {
+			return false;
 		}
 		
-		return false;
+		Set<Move> valid = getValidMoves();
+		
+		return valid.contains(m);
+	}
+	
+	public Move getMoveTo(Location end) {
+		return new Move(getLocation(), end);
 	}
 
 	/**
@@ -90,31 +82,29 @@ public abstract class Piece {
 	 * Gets a {@link Set} of any {@link Location} that is a valid move for this piece, disregarding check.
 	 * @return a {@link Set} of any valid {@link Location} that is a valid move, disregarding check.
 	 */
-	protected abstract Set<Location> getValidMovesNoCheck();
+	protected abstract Set<Move> getValidMovesNoCheck();
 	
 	/**
-	 * Gets a {@link Set} of any {@link Location} that is a valid move for this piece.
-	 * @return a {@link Set} of any valid {@link Location} that is a valid move.
+	 * Gets a {@link Set} of any {@link Move} that is a valid move for this piece.
+	 * @return a {@link Set} of any valid {@link Move} that is a valid move.
 	 */
-	public Set<Location> getValidMoves() {
-		getValidMovesNoCheck();
-		Set<Location> noCheckValid = getValidMovesNoCheck();
-		Set<Location> valid = new HashSet<>();
-		King k = board.getKing(getColor());
+	public Set<Move> getValidMoves() {
+		Set<Move> noCheckValid = getValidMovesNoCheck();
+		Set<Move> valid = new HashSet<>();
+		King k = getBoard().getKing(getColor());
 		if(k == null) {
 			return valid;
 		}
-		for(Location tmp : noCheckValid) {
+		for(Move tmp : noCheckValid) {
 			valid.add(tmp);
-			Location oldLocation = getLocation();
-			Piece oldPiece = setLocation(tmp);
+			setLocation(tmp.getEnd());
 			if(k.isInCheck()) {
 				valid.remove(tmp);
 			}
 			
-			setLocation(oldLocation);
+			setLocation(tmp.getStart());
 			
-			tmp.setOccupant(oldPiece);
+			tmp.getEnd().setOccupant(tmp.getCaptured());
 		}
 		
 		return valid;
@@ -174,7 +164,7 @@ public abstract class Piece {
 	 * @return the {@link Board} that this Piece inhabits.
 	 */
 	protected Board getBoard() {
-		return this.board;
+		return getLocation().getBoard();
 	}
 	
 	private void setColor(PieceColor c) {
@@ -183,10 +173,6 @@ public abstract class Piece {
 	
 	private void setSpriteLookup(SpriteLookup l) {
 		this.lookup = l;
-	}
-	
-	private void setBoard(Board b) {
-		this.board = b;
 	}
 	
 	private void setMovesMade(int m) {

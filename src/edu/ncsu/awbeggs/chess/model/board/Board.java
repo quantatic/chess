@@ -43,33 +43,33 @@ public class Board {
 		
 		for(int row = 0; row < BOARD_HEIGHT; row++) {
 			for(int col = 0; col < BOARD_WIDTH; col++) {
-				locations[row][col] = new Location(row + 1, col + 1);
+				locations[row][col] = new Location(row + 1, col + 1, this);
 			}
 		}
 		
 		if(initBoard) {
 			for(int col = 1; col <= BOARD_WIDTH; col++) {
-				new Pawn(getLocation(2, col), PieceColor.WHITE, this);
-				new Pawn(getLocation(7, col), PieceColor.BLACK, this);
+				new Pawn(getLocation(2, col), PieceColor.WHITE);
+				new Pawn(getLocation(7, col), PieceColor.BLACK);
 			}
 			
-			new Rook(getLocation(1, 1), PieceColor.WHITE, this);
-			new Knight(getLocation(1, 2), PieceColor.WHITE, this);
-			new Bishop(getLocation(1, 3), PieceColor.WHITE, this);
-			new Queen(getLocation(1, 4), PieceColor.WHITE, this);
-			new King(getLocation(1, 5), PieceColor.WHITE, this);
-			new Bishop(getLocation(1, 6), PieceColor.WHITE, this);
-			new Knight(getLocation(1, 7), PieceColor.WHITE, this);
-			new Rook(getLocation(1, 8), PieceColor.WHITE, this);
+			new Rook(getLocation(1, 1), PieceColor.WHITE);
+			new Knight(getLocation(1, 2), PieceColor.WHITE);
+			new Bishop(getLocation(1, 3), PieceColor.WHITE);
+			new Queen(getLocation(1, 4), PieceColor.WHITE);
+			new King(getLocation(1, 5), PieceColor.WHITE);
+			new Bishop(getLocation(1, 6), PieceColor.WHITE);
+			new Knight(getLocation(1, 7), PieceColor.WHITE);
+			new Rook(getLocation(1, 8), PieceColor.WHITE);
 			
-			new Rook(getLocation(8, 1), PieceColor.BLACK, this);
-			new Knight(getLocation(8, 2), PieceColor.BLACK, this);
-			new Bishop(getLocation(8, 3), PieceColor.BLACK, this);
-			new Queen(getLocation(8, 4), PieceColor.BLACK, this);
-			new King(getLocation(8, 5), PieceColor.BLACK, this);
-			new Bishop(getLocation(8, 6), PieceColor.BLACK, this);
-			new Knight(getLocation(8, 7), PieceColor.BLACK, this);
-			new Rook(getLocation(8, 8), PieceColor.BLACK, this);
+			new Rook(getLocation(8, 1), PieceColor.BLACK);
+			new Knight(getLocation(8, 2), PieceColor.BLACK);
+			new Bishop(getLocation(8, 3), PieceColor.BLACK);
+			new Queen(getLocation(8, 4), PieceColor.BLACK);
+			new King(getLocation(8, 5), PieceColor.BLACK);
+			new Bishop(getLocation(8, 6), PieceColor.BLACK);
+			new Knight(getLocation(8, 7), PieceColor.BLACK);
+			new Rook(getLocation(8, 8), PieceColor.BLACK);
 		}
 		
 		currentTurn = PieceColor.WHITE;
@@ -92,15 +92,14 @@ public class Board {
 	 * is legal, and the {@link Move} was made successfully.
 	 */
 	public boolean attemptMove(Location start, Location end) {
-		if(start == null || start.getOccupant() == null) {
+		if(start == null || start.getOccupant() == null || end == null) {
 			return false;
 		}
 		
-		Piece toMove = start.getOccupant();
-		Move moveAttept = new Move(start, end, toMove);
-		if(toMove.attemptMove(end)) {
+		Move moveAttept = new Move(start, end);
+		if(moveAttept.attemptMove()) {
 			moves.push(moveAttept);
-			toMove.incrementMovesMade();
+			this.currentTurn = (this.currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 			return true;
 		}
 		
@@ -117,7 +116,6 @@ public class Board {
 				&& attemptMove(this.selectedSpace, selected)) {
 			System.out.println(getMovesString());
 			this.selectedSpace = null;
-			this.currentTurn = (this.currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 		} else if(this.selectedSpace != selected 
 				&& this.selectedSpace == null && selected.getOccupant() != null 
 				&& selected.getOccupant().getColor() == currentTurn 
@@ -196,13 +194,8 @@ public class Board {
 			return;
 		}
 		
-		Move lastMove = moves.pop();
+		moves.pop().undoMove();
 		
-		Piece moved = lastMove.getMoved();
-		lastMove.getStart().setOccupant(moved);
-		moved.decrementMovesMade();
-		
-		lastMove.getEnd().setOccupant(lastMove.getCaptured());
 		currentTurn = (getCurrentTurn() == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 	}
 	

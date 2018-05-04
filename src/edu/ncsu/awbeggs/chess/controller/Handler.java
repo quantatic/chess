@@ -18,6 +18,8 @@ public class Handler {
 	 */
 	public static void main(String[] args) {
 		Board board = new Board(true);
+
+		
 		ChessboardDisplay c = new ChessboardDisplay(board);
 		
 		

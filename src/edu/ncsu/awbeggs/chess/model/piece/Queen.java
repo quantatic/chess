@@ -5,6 +5,7 @@ import java.util.Set;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Move;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 /**
@@ -17,15 +18,14 @@ public class Queen extends Piece {
 	 * {@link SpriteLookup}, and {@link Board} for this Queen.
 	 * @param location the {@link Location} of this Queen.
 	 * @param color the {@link PieceColor} of this Queen.
-	 * @param board the {@link Board} this Queen inhabits.
 	 */
-	public Queen(Location location, PieceColor color, Board board) {
-		super(location, color, SpriteLookup.QUEEN, board);
+	public Queen(Location location, PieceColor color) {
+		super(location, color, SpriteLookup.QUEEN);
 	}
 	
 	@Override
-	protected Set<Location> getValidMovesNoCheck() {
-		Set<Location> validMoves = new HashSet<>();
+	protected Set<Move> getValidMovesNoCheck() {
+		Set<Move> validMoves = new HashSet<>();
 		
 		for(int rowMod : new int[] {-1, 0, 1}) {
 			for(int colMod : new int[] {-1, 0, 1}) {
@@ -34,7 +34,7 @@ public class Queen extends Piece {
 				Location tmpLocation = getBoard().getLocation(getRow() + tmpOffsetRow, 
 						getCol() + tmpOffsetCol);
 				while(tmpLocation != null && tmpLocation.isEmpty()) {
-					validMoves.add(tmpLocation);
+					validMoves.add(getMoveTo(tmpLocation));
 					tmpOffsetRow += rowMod;
 					tmpOffsetCol += colMod;
 					tmpLocation = getBoard().getLocation(getRow() + tmpOffsetRow, 
@@ -42,7 +42,7 @@ public class Queen extends Piece {
 				}
 				
 				if(tmpLocation != null && tmpLocation.getOccupant().getColor() != getColor()) {
-					validMoves.add(tmpLocation);
+					validMoves.add(getMoveTo(tmpLocation));
 				}
 			}
 		}

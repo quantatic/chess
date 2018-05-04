@@ -5,6 +5,7 @@ import java.util.Set;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Move;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 /**
@@ -13,29 +14,30 @@ import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
  */
 public class Pawn extends Piece {
 	
+	private boolean canBeTakenViaEnPassant;
+	
 	/** Full constructor for Pawn. Sets {@link Location}, {@link PieceColor}, 
 	 * {@link SpriteLookup}, and {@link Board} for this Pawn.
 	 * @param location the {@link Location} of this Pawn.
 	 * @param color the {@link PieceColor} of this Pawn.
-	 * @param board the {@link Board} this Pawn inhabits.
 	 */
-	public Pawn(Location location, PieceColor color, Board board) {
-		super(location, color, SpriteLookup.PAWN, board);
+	public Pawn(Location location, PieceColor color) {
+		super(location, color, SpriteLookup.PAWN);
 	}
 
 	@Override
-	public Set<Location> getValidMovesNoCheck() {
-		Set<Location> valid = new HashSet<>();
+	public Set<Move> getValidMovesNoCheck() {
+		Set<Move> valid = new HashSet<>();
 		int direction = getColor() == PieceColor.WHITE ? 1 : -1;
 		
 		Location checkLocation = getBoard().getLocation(getRow() + direction, getCol());
 		if(checkLocation != null && checkLocation.isEmpty()) {
-			valid.add(checkLocation);
+			valid.add(getMoveTo(checkLocation));
 			checkLocation = getBoard().getLocation(getRow() + (direction * 2), getCol());
 			if(checkLocation != null 
 					&& (direction == 1 ? (getRow() == 2) : (getRow() == 7))
 					&& checkLocation.isEmpty()) {
-				valid.add(checkLocation);
+				valid.add(getMoveTo(checkLocation));
 			}
 		}
 		
@@ -43,10 +45,11 @@ public class Pawn extends Piece {
 			checkLocation = getBoard().getLocation(getRow() + direction, getCol() + colOffset);
 			if(checkLocation != null && checkLocation.getOccupant() != null 
 					&& checkLocation.getOccupant().getColor() != getColor()) {
-				valid.add(checkLocation);
+				valid.add(getMoveTo(checkLocation));
 			}
 		}
 		return valid;
 	}
-
+	
+	
 }

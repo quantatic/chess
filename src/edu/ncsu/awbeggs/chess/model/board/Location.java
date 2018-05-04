@@ -17,14 +17,17 @@ public class Location extends Observable {
 	/** The column of this Location on the {@link Board}. */
 	private int col;
 	
+	private Board board;
+	
 	/**
 	 * Full constructor for a Location, with a row and a column.
 	 * @param row the row of this Location.
 	 * @param col the column of this Location.
 	 */
-	public Location(int row, int col) {
+	public Location(int row, int col, Board board) {
 		this.row = row;
 		this.col = col;
+		this.board = board;
 	}
 	
 	/**
@@ -74,6 +77,10 @@ public class Location extends Observable {
 	 */
 	public Piece getOccupant() {
 		return this.occupant;
+	}
+	
+	public Board getBoard() {
+		return this.board;
 	}
 	
 	/**

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Move;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 /**
@@ -17,15 +18,14 @@ public class Knight extends Piece {
 	 * {@link SpriteLookup}, and {@link Board} for this Knight.
 	 * @param location the {@link Location} of this Knight.
 	 * @param color the {@link PieceColor} of this Knight.
-	 * @param board the {@link Board} this Knight inhabits.
 	 */
-	public Knight(Location location, PieceColor color, Board board) {
-		super(location, color, SpriteLookup.KNIGHT, board);
+	public Knight(Location location, PieceColor color) {
+		super(location, color, SpriteLookup.KNIGHT);
 	}
 
 	@Override
-	public Set<Location> getValidMovesNoCheck() {
-		Set<Location> validMoves = new HashSet<Location>();
+	public Set<Move> getValidMovesNoCheck() {
+		Set<Move> validMoves = new HashSet<>();
 		
 		for(int rowMod : new int[] {-1, 1}) {
 			for(int colMod : new int[] {-1, 1}) {
@@ -36,7 +36,7 @@ public class Knight extends Piece {
 					if(checkLocation != null 
 							&& (checkLocation.isEmpty() 
 									|| (checkLocation.getOccupant().getColor() != getColor()))) {
-						validMoves.add(checkLocation);
+						validMoves.add(getMoveTo(checkLocation));
 					}
 				}
 			}

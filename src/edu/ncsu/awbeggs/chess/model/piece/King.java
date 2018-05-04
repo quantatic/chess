@@ -5,6 +5,7 @@ import java.util.Set;
 
 import edu.ncsu.awbeggs.chess.model.board.Board;
 import edu.ncsu.awbeggs.chess.model.board.Location;
+import edu.ncsu.awbeggs.chess.model.board.Move;
 import edu.ncsu.awbeggs.chess.ui.SpriteLookup;
 
 /**
@@ -19,15 +20,14 @@ public class King extends Piece {
 	 * {@link SpriteLookup}, and {@link Board} for this King.
 	 * @param location the {@link Location} of this King.
 	 * @param color the {@link PieceColor} of this King.
-	 * @param board the {@link Board} this King inhabits.
 	 */
-	public King(Location location, PieceColor color, Board board) {
-		super(location, color, SpriteLookup.KING, board);
+	public King(Location location, PieceColor color) {
+		super(location, color, SpriteLookup.KING);
 	}
 
 	@Override
-	protected Set<Location> getValidMovesNoCheck() {
-		Set<Location> valid = new HashSet<>();
+	protected Set<Move> getValidMovesNoCheck() {
+		Set<Move> valid = new HashSet<>();
 		
 		for(int rowOffset : new int[] {-1, 0, 1}) {
 			for(int colOffset : new int[] {-1, 0, 1}) {
@@ -36,7 +36,7 @@ public class King extends Piece {
 				
 				if(tmpLocation != null && (tmpLocation.isEmpty() 
 						|| tmpLocation.getOccupant().getColor() != getColor())) {
-					valid.add(tmpLocation);
+					valid.add(getMoveTo(tmpLocation));
 				}
 			}
 		}
@@ -51,7 +51,7 @@ public class King extends Piece {
 	public boolean isInCheck() {
 		Set<Piece> otherPieces = getBoard().getPieces((getColor() == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE);
 		for(Piece p : otherPieces) {
-			if(p.getValidMovesNoCheck().contains(getLocation())) {
+			if(p.getValidMovesNoCheck().contains(p.getMoveTo(getLocation()))) {
 				return true;
 			}
 		}
@@ -64,33 +64,16 @@ public class King extends Piece {
 	 * @return a {@link Set} of {@link Location} objects for all valid moves for this {@link King}.
 	 */
 	@Override
-	public Set<Location> getValidMoves() {
-		Set<Location> valid = super.getValidMoves();
+	public Set<Move> getValidMoves() {
+		Set<Move> valid = super.getValidMoves();
 		if(canCastle(true)) {
-			valid.add(getBoard().getLocation(getRow(), 7));
+			valid.add(getMoveTo(getBoard().getLocation(getRow(), 7)));
 		}
 		
 		if(canCastle(false)) {
-			valid.add(getBoard().getLocation(getRow(), 3));
+			valid.add(getMoveTo(getBoard().getLocation(getRow(), 3)));
 		}
 		return valid;
-	}
-
-	/**
-	 * Attempts to move this {@link King} to the passed {@link Location}, accounting for possible attempts
-	 * to castle. Updates whether or not this {@link King} has moved.
-	 * @param l the {@link Location} to attempt to move this {@link King} to.
-	 * @return true if the move was successful, false otherwise.
-	 */
-	@Override
-	public boolean attemptMove(Location l) {
-		if(l.getCol() == 7 && getCol() == 5 && canCastle(true)) {
-			return doCastle(true);
-		} else if(l.getCol() == 3 && getCol() == 5 && canCastle(false)) {
-			return doCastle(false);
-		} else {
-			return super.attemptMove(l);
-		}
 	}
 	
 	/**
@@ -120,7 +103,7 @@ public class King extends Piece {
 		int rookColTo = (rookToCastleWith.getCol() == 8) ? 6 : 4; //find where the rook wants to move to in castle
 		
 		if(!(rookToCastleWith.getValidMoves()
-				.contains(getBoard().getLocation(rookToCastleWith.getRow(), rookColTo)))) {
+				.contains(rookToCastleWith.getMoveTo(getBoard().getLocation(rookToCastleWith.getRow(), rookColTo))))) {
 			return false; //if move to wanted location is not valid
 		}
 		
@@ -147,7 +130,7 @@ public class King extends Piece {
 		return canCastle; //returns whether or not the king can castle
 	}
 	
-	private boolean doCastle(boolean kingSide) {
+	public boolean doCastle(boolean kingSide) {
 		if(!canCastle(kingSide)) {
 			return false;
 		}
@@ -156,7 +139,7 @@ public class King extends Piece {
 		int rookTo = kingSide ? 6 : 4; 
 		int kingTo = kingSide ? 7 : 3;
 		
-		Rook toMove = (Rook)getBoard().getLocation(getRow(), rookAt).getOccupant();
+		Rook toMove = (Rook)(getBoard().getLocation(getRow(), rookAt).getOccupant());
 		toMove.setLocation(getBoard().getLocation(getRow(), rookTo));
 		toMove.incrementMovesMade();
 		
@@ -167,4 +150,18 @@ public class King extends Piece {
 	}
 	
 	
+	public boolean undoCastle(boolean kingSide) {
+		int rookAt = kingSide ? 6 : 4;
+		int rookTo = kingSide ? 8 : 1; 
+		int kingTo = 5;
+		
+		Rook toMove = (Rook)(getBoard().getLocation(getRow(), rookAt).getOccupant());
+		toMove.setLocation(getBoard().getLocation(getRow(), rookTo));
+		toMove.decrementMovesMade();
+		
+		setLocation(getBoard().getLocation(getRow(), kingTo));
+		decrementMovesMade();
+		
+		return true;
+	}
 }
