@@ -1,5 +1,8 @@
 package edu.ncsu.chess.game;
 
+import edu.ncsu.chess.piece.Pawn;
+import edu.ncsu.chess.piece.PieceColor;
+
 /**
  * Represents a chess board.
  * @author Aidan Beggs
@@ -49,5 +52,15 @@ public class Board {
 	 */
 	public boolean validLocation(int row, int col) {
 		return (row >= 0 && row < HEIGHT && col >= 0 && col < WIDTH);
+	}
+	
+	public static void main(String[] args) {
+		Board b = new Board();
+		b.getLocation(4, 4).setPiece(new Pawn(PieceColor.BLACK));
+		for(int row = 0; row < Board.HEIGHT; row++) {
+			for(int col = 0; col < Board.WIDTH; col++) {
+				System.out.println(b.getLocation(row, col).toString());
+			}
+		}
 	}
 }

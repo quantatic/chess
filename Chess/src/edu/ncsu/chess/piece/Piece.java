@@ -9,7 +9,8 @@ public interface Piece {
 	
 	public PieceColor getColor();
 	
-	public List<Location> validMoves(Board b, int startRow, int startCol);
+	public boolean hasMoved();
+	public void setMoved();
 	
-	public String toString();
+	public List<Location> validMoves(Board b, int startRow, int startCol);
 }

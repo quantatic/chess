@@ -107,4 +107,9 @@ public class Location {
 	public boolean isEmpty() {
 		return this.piece == null;
 	}
+	
+	@Override
+	public String toString() {
+		return "Location at row: " + this.row + ", col: " + this.col + " with piece: " + this.piece;
+	}
 }
