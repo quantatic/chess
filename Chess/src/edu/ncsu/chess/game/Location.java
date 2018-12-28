@@ -1,5 +1,9 @@
 package edu.ncsu.chess.game;
 
+/**
+ * Represents a Location on a chess board, which may or may not have a Piece.
+ * @author Aidan Beggs
+ */
 public class Location {
 	
 	private final int row, col;
@@ -7,9 +11,9 @@ public class Location {
 	private Piece piece;
 	
 	/**
-	 * Creates a new Location with a given x and y.
-	 * @param x the x to set for this location.
-	 * @param y the y to set for this location.
+	 * Creates a new location with a given x and y.
+	 * @param row the row to set for this location.
+	 * @param  col the column to set for this location.
 	 */
 	public Location(int row, int col) {
 		this.row = row;
@@ -17,25 +21,25 @@ public class Location {
 	}
 	
 	/**
-	 * Gets the row of this Location.
-	 * @return the row of this Location.
+	 * Gets the row of this location.
+	 * @return the row of this location.
 	 */
 	public int getRow() {
 		return this.row;
 	}
 	
 	/**
-	 * Gets the column of this Location.
-	 * @return the column of this Location.
+	 * Gets the column of this location.
+	 * @return the column of this location.
 	 */
 	public int getCol() {
 		return this.col;
 	}
 	
 	/**
-	 * Sets the Piece at this Location.
-	 * @param piece the Piece to set at this location, cannot be null.
-	 * @throws IllegalArgumentException if the given Piece is null.
+	 * Sets the piece at this location.
+	 * @param piece the piece to set at this location, cannot be null.
+	 * @throws IllegalArgumentException if the given piece is null.
 	 */
 	public void setPiece(Piece piece) {
 		if(piece == null) {
@@ -46,11 +50,11 @@ public class Location {
 	}
 	
 	/**
-	 * Replaces the Piece at this Location with the given Piece.
-	 * @param piece the Piece to set at this Location, cannot be null.
-	 * @return the old Piece at this Location.
-	 * @throws IllegalArgumentException if the given Piece is null.
-	 * @throws IllegalStateException if this Location had no Piece at it to begin with.
+	 * Replaces the piece at this location with the given piece.
+	 * @param piece the piece to set at this location, cannot be null.
+	 * @return the old piece at this location.
+	 * @throws IllegalArgumentException if the given piece is null.
+	 * @throws IllegalStateException if this location had no piece at it to begin with.
 	 */
 	public Piece replacePiece(Piece piece) {
 		if(piece == null) {
@@ -67,9 +71,9 @@ public class Location {
 	}
 	
 	/**
-	 * Gets the Piece at this Location.
-	 * @return the Piece at this Location, throwing an exception if there is no Piece at this location.
-	 * @throws IllegalStateException if there is not Piece at this Location.
+	 * Gets the piece at this location.
+	 * @return the piece at this Location, throwing an exception if there is no piece at this location.
+	 * @throws IllegalStateException if there is not piece at this location.
 	 */
 	public Piece getPiece() {
 		if(this.piece == null) {
@@ -81,8 +85,8 @@ public class Location {
 	
 	/**
 	 * Empties this location, returning the removed piece.
-	 * @return the Piece that used to be at this Location.
-	 * @throws IllegalStateException if there was no Piece at this Location when this method was called.
+	 * @return the piece that used to be at this location.
+	 * @throws IllegalStateException if there was no piece at this location when this method was called.
 	 */
 	public Piece emptyLocation() {
 		if(this.piece == null) {
@@ -95,8 +99,8 @@ public class Location {
 	}
 	
 	/**
-	 * Checks whether this Location is empty.
-	 * @return whether this Location is empty.
+	 * Checks whether this location is empty.
+	 * @return whether this location is empty.
 	 */
 	public boolean isEmpty() {
 		return this.piece == null;
