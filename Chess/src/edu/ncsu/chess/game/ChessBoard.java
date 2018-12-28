@@ -1,13 +1,18 @@
 package edu.ncsu.chess.game;
 
+import edu.ncsu.chess.piece.Pawn;
+import edu.ncsu.chess.piece.PieceColor;
+
 /**
  * Represents a chess board.
  * @author Aidan Beggs
  */
 public class ChessBoard {
 	
+	/** The width of a chess board. */
 	public static final int WIDTH = 8;
 
+	/** The height of a chess board. */
 	public static final int HEIGHT = 8;
 
 	private final Location[][] board;
@@ -23,6 +28,11 @@ public class ChessBoard {
 				this.board[row][col] = new Location(row, col);
 			}
 		}
+		
+		for(int col = 1; col <= WIDTH; col++) {
+			getLocation(2, col).setPiece(new Pawn(PieceColor.WHITE));
+			getLocation(7, col).setPiece(new Pawn(PieceColor.BLACK));
+		}
 	}
 	
 	/**
@@ -37,7 +47,7 @@ public class ChessBoard {
 			throw new IllegalArgumentException("Given row/col out of bounds.");
 		}
 		
-		return this.board[row + 1][col + 1];
+		return this.board[row - 1][col - 1];
 	}
 	
 	/**
