@@ -34,10 +34,20 @@ public class Board {
 	 * @throws IllegalArgumentException if the given row/column are out of bounds.
 	 */
 	public Location getLocation(int row, int col) {
-		if(row < 0 || row >= HEIGHT || col < 0 || col >= WIDTH) {
+		if(!validLocation(row, col)) {
 			throw new IllegalArgumentException("Given row/col out of bounds.");
 		}
 		
 		return this.board[row][col];
+	}
+	
+	/**
+	 * Checks to see whether the given row and column are valid locations on this board.
+	 * @param row the row to check as a valid location.
+	 * @param col the column to check as a valid location.
+	 * @return whether the given row and column are valid locations.
+	 */
+	public boolean validLocation(int row, int col) {
+		return (row >= 0 && row < HEIGHT && col >= 0 && col < WIDTH);
 	}
 }

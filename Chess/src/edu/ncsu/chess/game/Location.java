@@ -1,5 +1,7 @@
 package edu.ncsu.chess.game;
 
+import edu.ncsu.chess.piece.Piece;
+
 /**
  * Represents a Location on a chess board, which may or may not have a Piece.
  * @author Aidan Beggs
