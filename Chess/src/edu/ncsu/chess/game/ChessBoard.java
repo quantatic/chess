@@ -1,25 +1,21 @@
 package edu.ncsu.chess.game;
 
-import edu.ncsu.chess.piece.Pawn;
-import edu.ncsu.chess.piece.PieceColor;
-
 /**
  * Represents a chess board.
  * @author Aidan Beggs
  */
-public class Board {
-	/** Represents the width of the board. */
+public class ChessBoard {
+	
 	public static final int WIDTH = 8;
-	
-	/** Represents the height of the board. */
+
 	public static final int HEIGHT = 8;
-	
+
 	private final Location[][] board;
 	
 	/**
 	 * Creates a new board and initializes necessary locations, including pieces at said locations.
 	 */
-	public Board() {
+	public ChessBoard() {
 		this.board = new Location[HEIGHT][WIDTH];
 		
 		for(int row = 0; row < HEIGHT; row++) {
@@ -41,7 +37,7 @@ public class Board {
 			throw new IllegalArgumentException("Given row/col out of bounds.");
 		}
 		
-		return this.board[row][col];
+		return this.board[row + 1][col + 1];
 	}
 	
 	/**
@@ -51,16 +47,6 @@ public class Board {
 	 * @return whether the given row and column are valid locations.
 	 */
 	public boolean validLocation(int row, int col) {
-		return (row >= 0 && row < HEIGHT && col >= 0 && col < WIDTH);
-	}
-	
-	public static void main(String[] args) {
-		Board b = new Board();
-		b.getLocation(4, 4).setPiece(new Pawn(PieceColor.BLACK));
-		for(int row = 0; row < Board.HEIGHT; row++) {
-			for(int col = 0; col < Board.WIDTH; col++) {
-				System.out.println(b.getLocation(row, col).toString());
-			}
-		}
+		return (row > 0 && row <= HEIGHT && col > 0 && col <= WIDTH);
 	}
 }

@@ -3,7 +3,7 @@ package edu.ncsu.chess.piece;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ncsu.chess.game.Board;
+import edu.ncsu.chess.game.ChessBoard;
 import edu.ncsu.chess.game.Location;
 
 /**
@@ -21,7 +21,7 @@ public class Pawn extends AbstractPiece {
 	}
 
 	@Override
-	public List<Location> validMoves(Board b, int startRow, int startCol) {
+	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
 		ArrayList<Location> validMoves = new ArrayList<>();
 		
 		int directionY = getColor() == PieceColor.WHITE ? 1 : -1; //1 if going up board (white), -1 if down (black)

@@ -9,7 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import edu.ncsu.chess.game.Board;
+import edu.ncsu.chess.game.ChessBoard;
+import edu.ncsu.chess.game.ChessBoard;
 
 /**
  * Represents a visual representation of the board.
@@ -29,24 +30,24 @@ public class BoardGUI extends JFrame{
 	
 	private class BoardPanel extends JPanel {
 		
-		private final Board board;
+		private final ChessBoard board;
 		
 		private final int scale;
 		
 		public BoardPanel(int scale) {
-			this.board = new Board();
+			this.board = new ChessBoard();
 			this.scale = scale;
-			setPreferredSize(new Dimension(scale * Board.WIDTH, scale * Board.HEIGHT));
+			setPreferredSize(new Dimension(scale * ChessBoard.WIDTH, scale * ChessBoard.HEIGHT));
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			Graphics2D g2d = (Graphics2D)g;
 			
-			for(int row = 0; row < Board.HEIGHT; row++) {
-				for(int col = 0; col < Board.WIDTH; col++) {
+			for(int row = 1; row <= ChessBoard.HEIGHT; row++) {
+				for(int col = 1; col <= ChessBoard.WIDTH; col++) {
 					g2d.setColor((row + col) % 2 == 0 ? new Color(139, 69, 19) : new Color(255, 228, 196));
-					g2d.fillRect(col * this.scale, row * this.scale, this.scale, this.scale);
+					g2d.fillRect((col - 1) * this.scale, (row - 1) * this.scale, this.scale, this.scale);
 				}
 			}
 		}
