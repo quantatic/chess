@@ -10,7 +10,7 @@ import edu.ncsu.chess.game.Location;
  * Represents a bishop, a chess piece.
  * @author Aidan Beggs
  */
-public class Bishop extends AbstractPiece{
+public class Bishop extends AbstractPiece {
 
 	/**
 	 * Creates a new bishop with the given color.
@@ -23,6 +23,24 @@ public class Bishop extends AbstractPiece{
 	@Override
 	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
 		List<Location> result = new ArrayList<>();
+		
+		for(int directionX : new int[] {-1, 1}) {
+			for(int directionY : new int[] {-1, 1}) {
+				int tmpRow = startRow;
+				int tmpCol = startCol;
+				while(b.validLocation(tmpRow, tmpCol)
+						&& b.getLocation(tmpRow, tmpCol).isEmpty()) { //while on board and haven't hit a piece, add it
+					result.add(b.getLocation(tmpRow, tmpCol));
+					tmpRow += directionY;
+					tmpCol += directionX;
+				}
+				
+				if(b.validLocation(tmpRow, tmpCol) //if the place where we couldn't move anymore was a piece of the opposite color
+						&& b.getLocation(tmpRow, tmpCol).getPiece().getColor() != getColor()) {
+					result.add(b.getLocation(tmpRow, tmpCol));
+				}
+			}
+		}
 		
 		return result;
 	}

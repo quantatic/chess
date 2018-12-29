@@ -81,7 +81,7 @@ public class ChessBoardGUI extends JFrame {
 	 * @param args command line arguments passed to this program.
 	 */
 	public static void main(String[] args) {
-		ChessBoardGUI g = new ChessBoardGUI(128);
+		ChessBoardGUI g = new ChessBoardGUI(200);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
