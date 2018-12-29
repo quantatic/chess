@@ -1,5 +1,6 @@
 package edu.ncsu.chess.piece;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import edu.ncsu.chess.game.ChessBoard;
@@ -37,4 +38,10 @@ public interface Piece {
 	 * @return a list of all valid moves for this piece.
 	 */
 	public List<Location> validMoves(ChessBoard b, int startRow, int startCol);
+	
+	/** 
+	 * Gets a buffered image representing this piece's sprite. 
+	 * @return this piece's sprite.
+	 */
+	public BufferedImage getSprite();
 }

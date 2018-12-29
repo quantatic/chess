@@ -17,7 +17,7 @@ public class Pawn extends AbstractPiece {
 	 * @param c the color for this pawn to have.
 	 */
 	public Pawn(PieceColor c) {
-		super(c);
+		super(c, "pawn");
 	}
 
 	@Override
@@ -25,8 +25,15 @@ public class Pawn extends AbstractPiece {
 		ArrayList<Location> validMoves = new ArrayList<>();
 		
 		int directionY = getColor() == PieceColor.WHITE ? 1 : -1; //1 if going up board (white), -1 if down (black)
-		if(b.validLocation(startRow + directionY, startCol)) {
+		if(b.validLocation(startRow + directionY, startCol) 
+				&& b.getLocation(startRow + directionY, startCol).isEmpty()) {
 			validMoves.add(b.getLocation(startRow + directionY, startCol));
+		}
+		
+		if(!hasMoved() && b.validLocation(startRow + 2 * directionY, startCol)
+				&& b.getLocation(startRow + directionY, startCol).isEmpty()
+				&& b.getLocation(startRow + 2 * directionY, startCol).isEmpty()) {
+			validMoves.add(b.getLocation(startRow + 2 * directionY, startCol));
 		}
 		
 		//Check both possible directions for taking a piece
