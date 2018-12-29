@@ -47,11 +47,6 @@ public abstract class AbstractPiece implements Piece {
 	}
 	
 	@Override
-	public String toString() {
-		throw new UnsupportedOperationException("Please implement toString() for" + this.getClass());
-	}
-	
-	@Override
 	public BufferedImage getSprite() {
 		return SpriteManager.lookupSprite("sprites/pieces/" 
 											+ getColor().name().toLowerCase() 

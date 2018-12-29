@@ -28,16 +28,16 @@ public class ChessBoard {
 	public ChessBoard() {
 		this.board = new Location[HEIGHT][WIDTH];
 		
-		for(int row = 0; row < HEIGHT; row++) {
-			for(int col = 0; col < WIDTH; col++) {
-				this.board[row][col] = new Location(row, col);
+		for(int row = 1; row <= HEIGHT; row++) {
+			for(int col = 1; col <= WIDTH; col++) {
+				this.board[row - 1][col - 1] = new Location(row, col);
 			}
 		}
 		
-		for(int col = 1; col <= WIDTH; col++) {
-			getLocation(2, col).setPiece(new Pawn(PieceColor.WHITE));
-			getLocation(7, col).setPiece(new Pawn(PieceColor.BLACK));
-		}
+//		for(int col = 1; col <= WIDTH; col++) {
+//			getLocation(2, col).setPiece(new Pawn(PieceColor.WHITE));
+//			getLocation(7, col).setPiece(new Pawn(PieceColor.BLACK));
+//		}
 		
 		for(int col : new int[] {1, 8}) {
 			getLocation(1, col).setPiece(new Rook(PieceColor.WHITE));

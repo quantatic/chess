@@ -27,8 +27,9 @@ public class Queen extends AbstractPiece {
 		for(int directionX : new int[] {-1, 0, 1}) {
 			for(int directionY : new int[] {-1, 0, 1}) {
 				if(directionX != 0 || directionY != 0) { //if not in no direction
-					int tmpRow = startRow;
-					int tmpCol = startCol;
+					int tmpRow = startRow + directionY;
+					int tmpCol = startCol + directionX;
+					
 					while(b.validLocation(tmpRow, tmpCol)
 							&& b.getLocation(tmpRow, tmpCol).isEmpty()) { //while on board and haven't hit a piece, add it
 						result.add(b.getLocation(tmpRow, tmpCol));

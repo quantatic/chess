@@ -4,12 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import edu.ncsu.chess.game.ChessBoard;
+import edu.ncsu.chess.game.Location;
+import edu.ncsu.chess.piece.Piece;
 
 /**
  * Represents a visual representation of the board.
@@ -51,11 +57,27 @@ public class ChessBoardGUI extends JFrame {
 		private final Color WHITE_SPACE = new Color(139, 69, 19);
 		private final Color BLACK_SPACE = new Color(255, 228, 196);
 		
+		private Location selectedLocation;
+		
 		
 		public BoardPanel(int scale) {
 			this.board = new ChessBoard();
 			this.scale = scale;
+			this.selectedLocation = board.getLocation(1, 1);
+			
 			setPreferredSize(new Dimension(scale * ChessBoard.WIDTH, scale * ChessBoard.HEIGHT));
+			addMouseMotionListener(new MouseMotionAdapter() {
+
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					int boardRow = Math.min(
+							ChessBoard.HEIGHT + 1 - (int)Math.ceil((double)e.getY() / BoardPanel.this.scale),
+							ChessBoard.HEIGHT);
+					int boardCol = (int)Math.ceil((double)e.getX() / BoardPanel.this.scale);
+					BoardPanel.this.selectedLocation = BoardPanel.this.board.getLocation(boardRow, boardCol);
+					repaint();
+				}
+			});
 		}
 		
 		@Override
@@ -73,6 +95,23 @@ public class ChessBoardGUI extends JFrame {
 					}
 				}
 			}
+			
+			g2d.setColor(new Color(0, 255, 0, 127));
+			g2d.fillRect((selectedLocation.getCol() - 1) * this.scale, 
+					(ChessBoard.HEIGHT - selectedLocation.getRow()) * this.scale, this.scale, this.scale);
+			
+			if(!selectedLocation.isEmpty()) {
+				Piece selectedPiece = selectedLocation.getPiece();
+				List<Location> validMoves = selectedPiece.validMoves(board, selectedLocation.getRow(), 
+						selectedLocation.getCol());
+				
+				System.out.println(validMoves);
+				g2d.setColor(new Color(0, 0, 255));
+				for(Location validMove : validMoves) {
+					g2d.fillRect((validMove.getCol() - 1) * this.scale, 
+							(ChessBoard.HEIGHT - validMove.getRow()) * this.scale, this.scale, this.scale);
+				}
+			}
 		}
 	}
 	
@@ -81,7 +120,7 @@ public class ChessBoardGUI extends JFrame {
 	 * @param args command line arguments passed to this program.
 	 */
 	public static void main(String[] args) {
-		ChessBoardGUI g = new ChessBoardGUI(200);
+		ChessBoardGUI g = new ChessBoardGUI(128);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

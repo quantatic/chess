@@ -26,8 +26,9 @@ public class Bishop extends AbstractPiece {
 		
 		for(int directionX : new int[] {-1, 1}) {
 			for(int directionY : new int[] {-1, 1}) {
-				int tmpRow = startRow;
-				int tmpCol = startCol;
+				int tmpRow = startRow + directionY;
+				int tmpCol = startCol + directionX;
+				
 				while(b.validLocation(tmpRow, tmpCol)
 						&& b.getLocation(tmpRow, tmpCol).isEmpty()) { //while on board and haven't hit a piece, add it
 					result.add(b.getLocation(tmpRow, tmpCol));

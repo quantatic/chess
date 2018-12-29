@@ -49,9 +49,4 @@ public class Pawn extends AbstractPiece {
 		
 		return validMoves;
 	}
-	
-	@Override
-	public String toString() {
-		return getColor() == PieceColor.WHITE ? "p" : "P";
-	}
 }
