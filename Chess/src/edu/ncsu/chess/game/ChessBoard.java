@@ -55,10 +55,10 @@ public class ChessBoard {
 		}
 		
 		getLocation(1, 4).setPiece(new Queen(PieceColor.WHITE));
-		getLocation(8, 4).setPiece(new Queen(PieceColor.WHITE));
+		getLocation(8, 4).setPiece(new Queen(PieceColor.BLACK));
 		
 		getLocation(1, 5).setPiece(new King(PieceColor.WHITE));
-		getLocation(8, 5).setPiece(new King(PieceColor.WHITE));
+		getLocation(8, 5).setPiece(new King(PieceColor.BLACK));
 	}
 	
 	/**
