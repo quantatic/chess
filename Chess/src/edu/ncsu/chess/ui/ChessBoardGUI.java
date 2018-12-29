@@ -63,17 +63,13 @@ public class ChessBoardGUI extends JFrame{
 			
 			for(int row = 1; row <= ChessBoard.HEIGHT; row++) {
 				for(int col = 1; col <= ChessBoard.WIDTH; col++) {
-					if(!this.board.getLocation(row, col).isEmpty()) {
-						if(this.board.getLocation(row, col).getPiece().getColor() == PieceColor.WHITE) {
-							g2d.setColor(Color.WHITE);
-						} else {
-							g2d.setColor(Color.BLACK);
-						}
-					} else {
-						g2d.setColor((row + col) % 2 == 0 ? WHITE_SPACE : BLACK_SPACE);
-					}
-					
+					g2d.setColor((row + col) % 2 == 0 ? WHITE_SPACE : BLACK_SPACE);
 					g2d.fillRect((col - 1) * this.scale, (ChessBoard.HEIGHT - row) * this.scale, this.scale, this.scale);
+					
+					if(!this.board.getLocation(row, col).isEmpty()) {
+						g2d.drawImage(this.board.getLocation(row, col).getPiece().getSprite(), 
+								(col - 1) * this.scale, (ChessBoard.HEIGHT - row) * this.scale, this.scale, this.scale, null);
+					}
 				}
 			}
 		}
