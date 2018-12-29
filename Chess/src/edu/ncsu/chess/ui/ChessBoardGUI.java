@@ -10,14 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import edu.ncsu.chess.game.ChessBoard;
-import edu.ncsu.chess.piece.PieceColor;
 
 /**
  * Represents a visual representation of the board.
  * @author Aidan Beggs
  */
-public class ChessBoardGUI extends JFrame{
+public class ChessBoardGUI extends JFrame {
 	
+	private static final long serialVersionUID = 6548192522996001684L;
+
 	/**
 	 * Creates a new chess board GUI with a given scale.
 	 * @param scale the scale to use when rendering the board.

@@ -17,7 +17,7 @@ public class Pawn extends AbstractPiece {
 	 * @param c the color for this pawn to have.
 	 */
 	public Pawn(PieceColor c) {
-		super(c, "pawn");
+		super(c, PieceType.PAWN);
 	}
 
 	@Override

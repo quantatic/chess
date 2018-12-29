@@ -1,7 +1,12 @@
 package edu.ncsu.chess.game;
 
+import edu.ncsu.chess.piece.Bishop;
+import edu.ncsu.chess.piece.King;
+import edu.ncsu.chess.piece.Knight;
 import edu.ncsu.chess.piece.Pawn;
 import edu.ncsu.chess.piece.PieceColor;
+import edu.ncsu.chess.piece.Queen;
+import edu.ncsu.chess.piece.Rook;
 
 /**
  * Represents a chess board.
@@ -33,6 +38,27 @@ public class ChessBoard {
 			getLocation(2, col).setPiece(new Pawn(PieceColor.WHITE));
 			getLocation(7, col).setPiece(new Pawn(PieceColor.BLACK));
 		}
+		
+		for(int col : new int[] {1, 8}) {
+			getLocation(1, col).setPiece(new Rook(PieceColor.WHITE));
+			getLocation(8, col).setPiece(new Rook(PieceColor.BLACK));
+		}
+		
+		for(int col : new int[] {2, 7}) {
+			getLocation(1, col).setPiece(new Knight(PieceColor.WHITE));
+			getLocation(8, col).setPiece(new Knight(PieceColor.BLACK));
+		}
+		
+		for(int col : new int[] {3, 6}) {
+			getLocation(1, col).setPiece(new Bishop(PieceColor.WHITE));
+			getLocation(8, col).setPiece(new Bishop(PieceColor.BLACK));
+		}
+		
+		getLocation(1, 4).setPiece(new Queen(PieceColor.WHITE));
+		getLocation(8, 4).setPiece(new Queen(PieceColor.WHITE));
+		
+		getLocation(1, 5).setPiece(new King(PieceColor.WHITE));
+		getLocation(8, 5).setPiece(new King(PieceColor.WHITE));
 	}
 	
 	/**

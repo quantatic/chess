@@ -19,6 +19,12 @@ public interface Piece {
 	public PieceColor getColor();
 	
 	/**
+	 * Gets the type of this piece.
+	 * @return the type of this piece.
+	 */
+	public PieceType getType();
+	
+	/**
 	 * Gets whether or not this piece has moved.
 	 * @return whether or not this piece has moved.
 	 */

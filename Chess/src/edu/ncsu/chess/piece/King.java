@@ -7,25 +7,23 @@ import edu.ncsu.chess.game.ChessBoard;
 import edu.ncsu.chess.game.Location;
 
 /**
- * Creates a new rook, a chess piece.
+ * Represents a king, a chess piece.
  * @author Aidan Beggs
  */
-public class Rook extends AbstractPiece {
+public class King extends AbstractPiece{
 
 	/**
-	 * Creates a new rook with a given color.
-	 * @param c the color for this rook.
+	 * Creates a new king with the given color.
+	 * @param c the color for this king.
 	 */
-	public Rook(PieceColor c) {
-		super(c, PieceType.ROOK);
+	public King(PieceColor c) {
+		super(c, PieceType.KING);
 	}
-
+	
 	@Override
 	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
 		List<Location> result = new ArrayList<>();
 		
 		return result;
 	}
-	
-	
 }

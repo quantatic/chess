@@ -7,17 +7,17 @@ import edu.ncsu.chess.game.ChessBoard;
 import edu.ncsu.chess.game.Location;
 
 /**
- * Creates a new rook, a chess piece.
+ * Creates a new knight, a chess piece.
  * @author Aidan Beggs
  */
-public class Rook extends AbstractPiece {
+public class Knight extends AbstractPiece {
 
 	/**
-	 * Creates a new rook with a given color.
-	 * @param c the color for this rook.
+	 * Creates a new knight with a given color.
+	 * @param c the color for this knight.
 	 */
-	public Rook(PieceColor c) {
-		super(c, PieceType.ROOK);
+	public Knight(PieceColor c) {
+		super(c, PieceType.KNIGHT);
 	}
 
 	@Override
@@ -26,6 +26,5 @@ public class Rook extends AbstractPiece {
 		
 		return result;
 	}
-	
-	
+
 }
