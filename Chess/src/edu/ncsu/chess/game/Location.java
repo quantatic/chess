@@ -88,7 +88,7 @@ public class Location {
 	/**
 	 * Empties this location, returning the removed piece.
 	 * @return the piece that used to be at this location.
-	 * @throws IllegalStateException if there was no piece at this location when this method was called.
+	 * @throws IllegalStateException if there was no piece at the location this method was called on.
 	 */
 	public Piece emptyLocation() {
 		if(this.piece == null) {

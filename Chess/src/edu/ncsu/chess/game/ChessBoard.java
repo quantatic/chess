@@ -4,6 +4,7 @@ import edu.ncsu.chess.piece.Bishop;
 import edu.ncsu.chess.piece.King;
 import edu.ncsu.chess.piece.Knight;
 import edu.ncsu.chess.piece.Pawn;
+import edu.ncsu.chess.piece.Piece;
 import edu.ncsu.chess.piece.PieceColor;
 import edu.ncsu.chess.piece.Queen;
 import edu.ncsu.chess.piece.Rook;
@@ -34,10 +35,10 @@ public class ChessBoard {
 			}
 		}
 		
-//		for(int col = 1; col <= WIDTH; col++) {
-//			getLocation(2, col).setPiece(new Pawn(PieceColor.WHITE));
-//			getLocation(7, col).setPiece(new Pawn(PieceColor.BLACK));
-//		}
+		for(int col = 1; col <= WIDTH; col++) {
+			getLocation(2, col).setPiece(new Pawn(PieceColor.WHITE));
+			getLocation(7, col).setPiece(new Pawn(PieceColor.BLACK));
+		}
 		
 		for(int col : new int[] {1, 8}) {
 			getLocation(1, col).setPiece(new Rook(PieceColor.WHITE));
@@ -74,6 +75,28 @@ public class ChessBoard {
 		}
 		
 		return this.board[row - 1][col - 1];
+	}
+	
+	/**
+	 * Moves a piece from one location to another, replacing a potential piece in the ending location.
+	 * @param startLocation the starting location to move the piece from.
+	 * @param endLocation the ending location to move the piece to, potentially with another piece in it.
+	 * @throws IllegalArgumentException if the starting location has no piece in it initially.
+	 */
+	public void movePiece(Location startLocation, Location endLocation) {
+		if(startLocation.isEmpty()) {
+			throw new IllegalArgumentException("starting location must have piece in it");
+		}
+		
+		Piece movedPiece = startLocation.emptyLocation();
+		
+		if(endLocation.isEmpty()) {
+			endLocation.setPiece(movedPiece);
+		} else {
+			endLocation.replacePiece(movedPiece);
+		}
+		
+		movedPiece.setMoved();
 	}
 	
 	/**
