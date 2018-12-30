@@ -24,8 +24,8 @@ public class Knight extends AbstractPiece {
 	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
 		List<Location> result = new ArrayList<>();
 		
-		for(int directionY = -2; directionY <= 2; directionY++) {
-			for(int directionX = -2; directionX <= 2; directionX++) {
+		for(int directionY : new int[]{-2, -1, 1, 2}) {
+			for(int directionX : new int[] {-2, -1, 1, 2}) {
 				if(Math.abs(directionX) + Math.abs(directionY) == 3) { //algorithm for valid knight moves
 					if(b.validLocation(startRow + directionY, startCol + directionX)) {
 						Location thisLocation = b.getLocation(startRow + directionY, startCol + directionX);
