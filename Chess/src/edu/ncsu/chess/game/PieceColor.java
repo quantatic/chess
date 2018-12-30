@@ -1,4 +1,4 @@
-package edu.ncsu.chess.piece;
+package edu.ncsu.chess.game;
 
 /**
  * Represents possible colors for chess pieces.

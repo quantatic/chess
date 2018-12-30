@@ -1,9 +1,7 @@
 package edu.ncsu.chess.game;
 
 import java.util.List;
-
-import edu.ncsu.chess.piece.Piece;
-import edu.ncsu.chess.piece.PieceColor;
+import java.util.Stack;
 
 /**
  * Wrapper to manager an entire game of chess.
@@ -13,6 +11,7 @@ public class ChessManager {
 	
 	private ChessBoard board;
 	private PieceColor currentTurn;
+	private final Stack<Move> moves;
 	
 	/**
 	 * Creates a new ChessManager, with a given starting player.
@@ -21,6 +20,7 @@ public class ChessManager {
 	public ChessManager(PieceColor startingPlayer) {
 		this.board = new ChessBoard();
 		this.currentTurn = startingPlayer;
+		this.moves = new Stack<>();
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class ChessManager {
 	 * @return a list of all valid moves from the given location.
 	 * @throws IllegalArgumentException if the given location has no piece.
 	 */
-	public List<Location> getMoves(Location start) {
+	public List<Location> getValidMoves(Location start) {
 		if(start.isEmpty()) {
 			throw new IllegalArgumentException("starting location to get moves from cannot be empty");
 		}
@@ -57,12 +57,16 @@ public class ChessManager {
 		}
 		
 		Piece movedPiece = startLocation.emptyLocation();
+		Piece takenPiece = null;
 		
 		if(endLocation.isEmpty()) {
 			endLocation.setPiece(movedPiece);
 		} else {
-			endLocation.replacePiece(movedPiece);
+			takenPiece = endLocation.replacePiece(movedPiece);
 		}
+		
+		Move thisMove = new Move(startLocation, endLocation, movedPiece, takenPiece);
+		moves.push(thisMove);
 		
 		movedPiece.setMoved();
 		this.currentTurn = (this.currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
@@ -81,5 +85,17 @@ public class ChessManager {
 		}
 		
 		return board.getLocation(row, col);
+	}
+	
+	/**
+	 * Undoes the last move made by this manager.
+	 * @throws IllegalStateException if there are no possible moves to undo.
+	 */
+	public void undo() {
+		if(moves.isEmpty()) {
+			throw new IllegalStateException("no more moves available to undo");
+		}
+		
+		Move lastMove = moves.pop();
 	}
 }

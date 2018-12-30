@@ -1,13 +1,5 @@
 package edu.ncsu.chess.game;
 
-import edu.ncsu.chess.piece.Bishop;
-import edu.ncsu.chess.piece.King;
-import edu.ncsu.chess.piece.Knight;
-import edu.ncsu.chess.piece.Pawn;
-import edu.ncsu.chess.piece.PieceColor;
-import edu.ncsu.chess.piece.Queen;
-import edu.ncsu.chess.piece.Rook;
-
 /**
  * Represents a chess board.
  * @author Aidan Beggs

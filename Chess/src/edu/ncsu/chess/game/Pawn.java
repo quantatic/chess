@@ -1,10 +1,7 @@
-package edu.ncsu.chess.piece;
+package edu.ncsu.chess.game;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.ncsu.chess.game.ChessBoard;
-import edu.ncsu.chess.game.Location;
 
 /**
  * Represents a chess pawn.

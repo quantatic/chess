@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import edu.ncsu.chess.game.ChessBoard;
 import edu.ncsu.chess.game.ChessManager;
 import edu.ncsu.chess.game.Location;
-import edu.ncsu.chess.piece.PieceColor;
+import edu.ncsu.chess.game.PieceColor;
 
 /**
  * Represents a visual representation of the board.
@@ -81,7 +81,7 @@ public class ChessBoardGUI extends JFrame {
 							selectedLocation = clickedLocation;
 						}
 					} else { //if previously selected location
-						List<Location> validMoves = manager.getMoves(selectedLocation);
+						List<Location> validMoves = manager.getValidMoves(selectedLocation);
 						
 						if(validMoves.contains(clickedLocation)) { //make sure clicking on a valid location
 							manager.movePiece(selectedLocation, clickedLocation);
@@ -120,7 +120,7 @@ public class ChessBoardGUI extends JFrame {
 
 			
 				if(!selectedLocation.isEmpty()) {
-					List<Location> validMoves = manager.getMoves(selectedLocation);
+					List<Location> validMoves = manager.getValidMoves(selectedLocation);
 	
 					g2d.setColor(new Color(0, 0, 255, 127));
 					for(Location validMove : validMoves) {
