@@ -13,8 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import edu.ncsu.chess.game.ChessBoard;
+import edu.ncsu.chess.game.ChessManager;
 import edu.ncsu.chess.game.Location;
-import edu.ncsu.chess.piece.Piece;
+import edu.ncsu.chess.piece.PieceColor;
 
 /**
  * Represents a visual representation of the board.
@@ -30,7 +31,6 @@ public class ChessBoardGUI extends JFrame {
 	 */
 	public ChessBoardGUI(int scale) {
 		super();
-		setTitle("Chess Game");
 		add(new BoardPanel(scale));
 		pack();
 		setLocationRelativeTo(null);
@@ -49,7 +49,7 @@ public class ChessBoardGUI extends JFrame {
 		 */
 		private static final long serialVersionUID = 5556046639390553516L;
 
-		private final ChessBoard board;
+		private final ChessManager manager;
 		
 		private final int scale;
 		
@@ -60,7 +60,7 @@ public class ChessBoardGUI extends JFrame {
 		
 		
 		public BoardPanel(int scale) {
-			this.board = new ChessBoard();
+			this.manager = new ChessManager(PieceColor.WHITE);
 			this.scale = scale;
 			
 			setPreferredSize(new Dimension(scale * ChessBoard.WIDTH, scale * ChessBoard.HEIGHT));
@@ -73,16 +73,18 @@ public class ChessBoardGUI extends JFrame {
 							ChessBoard.HEIGHT + 1 - (int)Math.ceil((double)e.getY() / scale),
 							ChessBoard.HEIGHT);
 					int boardCol = (int)Math.ceil((double)e.getX() / BoardPanel.this.scale);
-					Location clickedLocation = board.getLocation(boardRow, boardCol);
+					Location clickedLocation = manager.getLocation(boardRow, boardCol);
 					
 					if(selectedLocation == null) { //if no selected location
-						selectedLocation = clickedLocation;
+						if(!clickedLocation.isEmpty()
+								&& clickedLocation.getPiece().getColor() == manager.getCurrentTurn()) { //if also, we clicked on a loc with a piece in it and of the right color
+							selectedLocation = clickedLocation;
+						}
 					} else { //if previously selected location
-						List<Location> validMoves = selectedLocation.getPiece().validMoves(board, 
-								selectedLocation.getRow(), selectedLocation.getCol());
+						List<Location> validMoves = manager.getMoves(selectedLocation);
 						
 						if(validMoves.contains(clickedLocation)) { //make sure clicking on a valid location
-							board.movePiece(selectedLocation, clickedLocation);
+							manager.movePiece(selectedLocation, clickedLocation);
 						}
 						
 						BoardPanel.this.selectedLocation = null;
@@ -95,6 +97,8 @@ public class ChessBoardGUI extends JFrame {
 		
 		@Override
 		protected void paintComponent(Graphics g) {
+			setTitle(manager.getCurrentTurn().toString() + " TURN"); //set the title whenever we repaint for whatever reason
+			
 			Graphics2D g2d = (Graphics2D)g;
 			
 			for(int row = 1; row <= ChessBoard.HEIGHT; row++) {
@@ -102,8 +106,8 @@ public class ChessBoardGUI extends JFrame {
 					g2d.setColor((row + col) % 2 == 0 ? whiteSquareColor : blackSquareColor);
 					g2d.fillRect((col - 1) * this.scale, (ChessBoard.HEIGHT - row) * this.scale, this.scale, this.scale);
 					
-					if(!this.board.getLocation(row, col).isEmpty()) {
-						g2d.drawImage(board.getLocation(row, col).getPiece().getSprite(), 
+					if(!manager.getLocation(row, col).isEmpty()) {
+						g2d.drawImage(manager.getLocation(row, col).getPiece().getSprite(), 
 								(col - 1) * this.scale, (ChessBoard.HEIGHT - row) * this.scale, this.scale, this.scale, null);
 					}
 				}
@@ -116,9 +120,7 @@ public class ChessBoardGUI extends JFrame {
 
 			
 				if(!selectedLocation.isEmpty()) {
-					Piece selectedPiece = selectedLocation.getPiece();
-					List<Location> validMoves = selectedPiece.validMoves(board, selectedLocation.getRow(), 
-							selectedLocation.getCol());
+					List<Location> validMoves = manager.getMoves(selectedLocation);
 	
 					g2d.setColor(new Color(0, 0, 255, 127));
 					for(Location validMove : validMoves) {
