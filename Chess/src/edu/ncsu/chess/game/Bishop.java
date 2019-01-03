@@ -18,13 +18,13 @@ public class Bishop extends AbstractPiece {
 	}
 
 	@Override
-	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
+	public List<Location> validMoves(ChessBoard b, Location l) {
 		List<Location> result = new ArrayList<>();
 		
 		for(int directionX : new int[] {-1, 1}) {
 			for(int directionY : new int[] {-1, 1}) {
-				int tmpRow = startRow + directionY;
-				int tmpCol = startCol + directionX;
+				int tmpRow = l.getRow() + directionY;
+				int tmpCol = l.getCol() + directionX;
 				
 				while(b.validLocation(tmpRow, tmpCol)
 						&& b.getLocation(tmpRow, tmpCol).isEmpty()) { //while on board and haven't hit a piece, add it

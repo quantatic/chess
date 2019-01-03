@@ -29,18 +29,18 @@ public interface Piece {
 	
 	/**
 	 * Sets this piece to have moved.
+	 * @param hasMoved whether this piece has moved.
 	 */
-	public void setMoved();
+	public void setMoved(boolean hasMoved);
 	
 	/**
 	 * Gets a list of all valid moves for this piece, given the board on which it resides,
 	 * and its starting row/column.
 	 * @param b the board which this piece resides on.
-	 * @param startRow the starting row for this piece.
-	 * @param startCol the starting column for this piece.
+	 * @param l the location at which this piece resides.
 	 * @return a list of all valid moves for this piece.
 	 */
-	public List<Location> validMoves(ChessBoard b, int startRow, int startCol);
+	public List<Location> validMoves(ChessBoard b, Location l);
 	
 	/** 
 	 * Gets a buffered image representing this piece's sprite. 

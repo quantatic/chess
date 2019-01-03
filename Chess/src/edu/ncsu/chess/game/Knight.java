@@ -18,14 +18,14 @@ public class Knight extends AbstractPiece {
 	}
 
 	@Override
-	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
+	public List<Location> validMoves(ChessBoard b, Location l) {
 		List<Location> result = new ArrayList<>();
 		
 		for(int directionY : new int[]{-2, -1, 1, 2}) {
 			for(int directionX : new int[] {-2, -1, 1, 2}) {
 				if(Math.abs(directionX) + Math.abs(directionY) == 3) { //algorithm for valid knight moves
-					if(b.validLocation(startRow + directionY, startCol + directionX)) {
-						Location thisLocation = b.getLocation(startRow + directionY, startCol + directionX);
+					if(b.validLocation(l.getRow() + directionY, l.getCol() + directionX)) {
+						Location thisLocation = b.getLocation(l.getRow() + directionY, l.getCol() + directionX);
 						if(thisLocation.isEmpty() || thisLocation.getPiece().getColor() != getColor()) {
 							result.add(thisLocation);
 						}

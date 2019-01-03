@@ -77,4 +77,19 @@ public class ChessBoard {
 	public boolean validLocation(int row, int col) {
 		return (row > 0 && row <= HEIGHT && col > 0 && col <= WIDTH);
 	}
+	
+	public void makeMove(Move m) {
+		if(m.getStart().isEmpty() || m.getStart().getPiece() != m.getMoved()) {
+			throw new IllegalArgumentException("given move is not valid for this board state");
+		}
+		
+		m.getStart().emptyLocation();
+		if(m.getEnd().isEmpty()) {
+			m.getEnd().setPiece(m.getMoved());
+		} else {
+			m.getEnd().replacePiece(m.getMoved());
+		}
+		
+		m.getMoved().setMoved(true);
+	}
 }

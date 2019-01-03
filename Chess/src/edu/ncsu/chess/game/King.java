@@ -18,14 +18,14 @@ public class King extends AbstractPiece {
 	}
 	
 	@Override
-	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
+	public List<Location> validMoves(ChessBoard b, Location l) {
 		List<Location> result = new ArrayList<>();
 		
 		for(int directionX : new int[]{-1, 0, 1}) {
 			for(int directionY : new int[]{-1, 0, 1}) {
 				if(directionX != 0 || directionY != 0) {
-					if(b.validLocation(startRow + directionY, startCol + directionX)) {
-						Location tmpLoc = b.getLocation(startRow + directionY, startCol + directionX);
+					if(b.validLocation(l.getRow() + directionY, l.getCol() + directionX)) {
+						Location tmpLoc = b.getLocation(l.getRow() + directionY, l.getCol() + directionX);
 						if(tmpLoc.isEmpty() || tmpLoc.getPiece().getColor() != getColor()) {
 							result.add(tmpLoc);
 						}

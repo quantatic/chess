@@ -1,16 +1,37 @@
 package edu.ncsu.chess.game;
 
+/**
+ * Represents a single move in a chess game.
+ * @author Aidan Beggs
+ */
 public class Move {
 	private final Location start;
 	private final Location end;
 	private final Piece moved;
 	private final Piece taken;
+	private final boolean hadMoved; //whether the moved piece had moved before this move.
 	
-	public Move(Location start, Location end, Piece moved, Piece taken) {
+	/**
+	 * Creates a new move from a given start location, end location, keeps track of the piece moved,
+	 * and the potential piece taken.
+	 * @param start the starting location for this move.
+	 * @param end the ending location for this move.
+	 */
+	public Move(Location start, Location end) {
 		this.start = start;
 		this.end = end;
-		this.moved = moved;
-		this.taken = taken;
+		if(start.isEmpty()) {
+			throw new IllegalStateException("starting location cannot be empty");
+		}
+		
+		this.moved = start.getPiece();
+		this.hadMoved = this.moved.hasMoved();
+		
+		if(end.isEmpty()) {
+			this.taken = null;
+		} else {
+			this.taken = end.getPiece();
+		}
 	}
 
 	/**
@@ -45,5 +66,11 @@ public class Move {
 		return taken;
 	}
 	
-	
+	/**
+	 * Whether the moved piece had moved before this move.
+	 * @return whether the moved piece had moved before this move.
+	 */
+	public boolean getHadMoved() {
+		return this.hadMoved;
+	}
 }

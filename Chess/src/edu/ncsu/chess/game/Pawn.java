@@ -18,25 +18,25 @@ public class Pawn extends AbstractPiece {
 	}
 
 	@Override
-	public List<Location> validMoves(ChessBoard b, int startRow, int startCol) {
+	public List<Location> validMoves(ChessBoard b, Location l) {
 		ArrayList<Location> validMoves = new ArrayList<>();
 		
 		int directionY = getColor() == PieceColor.WHITE ? 1 : -1; //1 if going up board (white), -1 if down (black)
-		if(b.validLocation(startRow + directionY, startCol) 
-				&& b.getLocation(startRow + directionY, startCol).isEmpty()) {
-			validMoves.add(b.getLocation(startRow + directionY, startCol));
+		if(b.validLocation(l.getRow() + directionY, l.getCol()) 
+				&& b.getLocation(l.getRow() + directionY, l.getCol()).isEmpty()) {
+			validMoves.add(b.getLocation(l.getRow() + directionY, l.getCol()));
 		}
 		
-		if(!hasMoved() && b.validLocation(startRow + 2 * directionY, startCol)
-				&& b.getLocation(startRow + directionY, startCol).isEmpty()
-				&& b.getLocation(startRow + 2 * directionY, startCol).isEmpty()) {
-			validMoves.add(b.getLocation(startRow + 2 * directionY, startCol));
+		if(!hasMoved() && b.validLocation(l.getRow() + 2 * directionY, l.getCol())
+				&& b.getLocation(l.getRow() + directionY, l.getCol()).isEmpty()
+				&& b.getLocation(l.getRow() + 2 * directionY, l.getCol()).isEmpty()) {
+			validMoves.add(b.getLocation(l.getRow() + 2 * directionY, l.getCol()));
 		}
 		
 		//Check both possible directions for taking a piece
 		for(int directionX : new int[]{-1, 1}) {
-			if(b.validLocation(startRow + directionY, startCol + directionX)) {
-				Location thisLoc = b.getLocation(startRow + directionY, startCol + directionX);
+			if(b.validLocation(l.getRow() + directionY, l.getCol() + directionX)) {
+				Location thisLoc = b.getLocation(l.getRow() + directionY, l.getCol() + directionX);
 
 				if(!thisLoc.isEmpty() && thisLoc.getPiece().getColor() != getColor()) {
 					validMoves.add(thisLoc);
