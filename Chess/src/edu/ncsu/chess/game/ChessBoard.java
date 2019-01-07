@@ -2,6 +2,7 @@ package edu.ncsu.chess.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Represents a chess board.
@@ -17,6 +18,8 @@ public class ChessBoard {
 	public static final int HEIGHT = 8;
 
 	private final Location[][] board;
+	
+	private final Stack<Move> moves;
 
 	/**
 	 * Creates a new board and initializes necessary locations, including pieces at
@@ -24,6 +27,7 @@ public class ChessBoard {
 	 */
 	public ChessBoard() {
 		this.board = new Location[HEIGHT][WIDTH];
+		this.moves = new Stack<>();
 
 		for (int y = 1; y <= HEIGHT; y++) {
 			for (int x = 1; x <= WIDTH; x++) {
@@ -61,13 +65,10 @@ public class ChessBoard {
 	/**
 	 * Gets the location at a given row/column.
 	 * 
-	 * @param x
-	 *            the row to get the location at.
-	 * @param y
-	 *            the column to get the location at.
+	 * @param x the row to get the location at.
+	 * @param y the column to get the location at.
 	 * @return the location at the given row/column.
-	 * @throws IllegalArgumentException
-	 *             if the given row/column are out of bounds.
+	 * @throws IllegalArgumentException if the given row/column are out of bounds.
 	 */
 	public Location getLocation(int x, int y) {
 		if (!validLocation(x, y)) {
@@ -81,10 +82,8 @@ public class ChessBoard {
 	 * Checks to see whether the given row and column are valid locations on this
 	 * board.
 	 * 
-	 * @param x
-	 *            the row to check as a valid location.
-	 * @param y
-	 *            the column to check as a valid location.
+	 * @param x the row to check as a valid location.
+	 * @param y the column to check as a valid location.
 	 * @return whether the given row and column are valid locations.
 	 */
 	public boolean validLocation(int x, int y) {
@@ -94,10 +93,8 @@ public class ChessBoard {
 	/**
 	 * Makes the given move on the board.
 	 * 
-	 * @param m
-	 *            the move to make.
-	 * @throws IllegalArgumentException
-	 *             if the given move is not valid for the current board state.
+	 * @param m the move to make.
+	 * @throws IllegalArgumentException if the given move is not valid for the current board state.
 	 */
 	public void makeMove(Move m) {
 		if (m.getStart().isEmpty() || m.getStart().getPiece() != m.getMoved()) {
@@ -112,6 +109,30 @@ public class ChessBoard {
 		}
 
 		m.getMoved().setMoved(true);
+		
+		moves.push(m);
+	}
+	
+	/**
+	 * Undoes the last move performed upon this board. Performing a move on this board and then calling
+	 * this function is exactly the same as if the move had never been performed in the first place.
+	 */
+	public void undoLastMove() {
+		if(moves.isEmpty()) {
+			throw new IllegalStateException();
+		}
+		
+		Move lastMove = moves.pop();
+		
+		
+		if(lastMove.pieceWasTaken()) {
+			lastMove.getEnd().replacePiece(lastMove.getTaken());
+		} else {
+			lastMove.getEnd().emptyLocation();
+		}
+		
+		lastMove.getStart().setPiece(lastMove.getMoved());
+		lastMove.getMoved().setMoved(lastMove.getHadMoved());
 	}
 
 	/**
@@ -136,6 +157,7 @@ public class ChessBoard {
 
 	/**
 	 * Gets all valid moves starting at the given location.
+	 * 
 	 * @param start the location to find all valid moves starting from.
 	 * @return a list of all valid moves that start from the given starting location.
 	 */
@@ -149,12 +171,11 @@ public class ChessBoard {
 			boolean validMove = true;
 			for(int y = 1; y <= HEIGHT; y++) {
 				for(int x = 1; x <= WIDTH; x++) {
-					if(validLocation(x, y)) {
-						Location loc = getLocation(x, y);
-						if(!loc.isEmpty() && loc.getPiece().getType() == PieceType.KING
-								&& isInCheck(loc)) {
-							validMove = false;
-						}
+					Location loc = getLocation(x, y);
+					if(!loc.isEmpty() && loc.getPiece().getType() == PieceType.KING
+							&& loc.getPiece().getColor() == m.getMoved().getColor()
+							&& isInCheck(loc)) {
+						validMove = false;
 					}
 				}
 			}
@@ -162,6 +183,8 @@ public class ChessBoard {
 			if(validMove) {
 				validMoves.add(m);
 			}
+			
+			undoLastMove();
 		}
 		
 		return validMoves;
@@ -170,6 +193,7 @@ public class ChessBoard {
 	/**
 	 * Checks to see whether a given location is in check. A location is in check if 
 	 * the piece at that location is in direct danger of being taken by a piece of the other color.
+	 * 
 	 * @param l the location to test for check at.
 	 * @return whether the piece at the given location is in check.
 	 * @throws IllegalArgumentException if the given location is empty.
@@ -248,11 +272,11 @@ public class ChessBoard {
 
 		List<Move> result = new ArrayList<>();
 
-		for (int directionX : new int[] { -1, 0, -1 }) {
-			for (int directionY : new int[] { -1, 0, -1 }) {
+		for (int directionX : new int[] { -1, 0, 1 }) {
+			for (int directionY : new int[] { -1, 0, 1 }) {
 				if (Math.abs(directionX) + Math.abs(directionY) == 1) {
-					int currentX = start.getX();
-					int currentY = start.getY();
+					int currentX = start.getX() + directionX;
+					int currentY = start.getY() + directionY;
 
 					while (validLocation(currentX, currentY) && getLocation(currentX, currentY).isEmpty()) {
 						result.add(new Move(start, getLocation(currentX, currentY)));
@@ -297,10 +321,10 @@ public class ChessBoard {
 
 		List<Move> result = new ArrayList<>();
 
-		for (int directionX : new int[] { -1, -1 }) {
-			for (int directionY : new int[] { -1, -1 }) {
-				int currentX = start.getX();
-				int currentY = start.getY();
+		for (int directionX : new int[] { -1, 1 }) {
+			for (int directionY : new int[] { -1, 1 }) {
+				int currentX = start.getX() + directionX;
+				int currentY = start.getY() + directionY;
 
 				while (validLocation(currentX, currentY) && getLocation(currentX, currentY).isEmpty()) {
 					result.add(new Move(start, getLocation(currentX, currentY)));
@@ -322,11 +346,11 @@ public class ChessBoard {
 
 		List<Move> result = new ArrayList<>();
 
-		for (int directionX : new int[] { -1, 0, -1 }) {
-			for (int directionY : new int[] { -1, 0, -1 }) {
+		for (int directionX : new int[] { -1, 0, 1 }) {
+			for (int directionY : new int[] { -1, 0, 1 }) {
 				if (!(directionX == 0 && directionY == 0)) {
-					int currentX = start.getX();
-					int currentY = start.getY();
+					int currentX = start.getX() + directionX;
+					int currentY = start.getY() + directionY;
 
 					while (validLocation(currentX, currentY) && getLocation(currentX, currentY).isEmpty()) {
 						result.add(new Move(start, getLocation(currentX, currentY)));
@@ -352,8 +376,8 @@ public class ChessBoard {
 		int startX = start.getX();
 		int startY = start.getY();
 
-		for (int directionX : new int[] { -1, 0, -1 }) {
-			for (int directionY : new int[] { -1, 0, -1 }) {
+		for (int directionX : new int[] { -1, 0, 1 }) {
+			for (int directionY : new int[] { -1, 0, 1 }) {
 				if (!(directionX == 0 && directionY == 0)) {
 					if (validLocation(startX + directionX, startY + directionY)) {
 						Location loc = getLocation(startX + directionX, startY + directionY);

@@ -12,8 +12,8 @@ public class Location {
 	
 	/**
 	 * Creates a new location with a given x and y.
-	 * @param row the row to set for this location.
-	 * @param  col the column to set for this location.
+	 * @param x the x coordinate to set for this location.
+	 * @param  y the y coordinate to set for this location.
 	 */
 	public Location(int x, int y) {
 		this.x = x;

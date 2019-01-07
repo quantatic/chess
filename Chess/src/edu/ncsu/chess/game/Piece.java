@@ -1,11 +1,6 @@
 package edu.ncsu.chess.game;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import edu.ncsu.chess.ui.SpriteManager;
 

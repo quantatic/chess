@@ -86,10 +86,18 @@ public class ChessBoardGUI extends JFrame {
 						}
 					} else { //if previously selected location
 						List<Move> validMoves = board.getMoves(selectedLocation);
-						
 						Move attemptedMove = new Move(selectedLocation, clickedLocation);
-						if(validMoves.contains(attemptedMove)) { //make sure clicking on a valid location
-							
+						
+						boolean validMove = false;
+						for(Move m : validMoves) {
+							if(m.getStart() == attemptedMove.getStart() 
+									&& m.getEnd() == attemptedMove.getEnd()) {
+								validMove = true;
+								break;
+							}
+						}
+						
+						if(validMove) { //make sure clicking on a valid location
 							board.makeMove(attemptedMove);
 							currentTurn = (currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 						}
@@ -144,6 +152,13 @@ public class ChessBoardGUI extends JFrame {
 			
 				if(!selectedLocation.isEmpty()) {
 					List<Move> validMoves = board.getMoves(selectedLocation);
+					
+					for(int i = 0; i < 1000000; i++) {
+						for(Move m : validMoves) {
+							board.makeMove(m);
+							board.undoLastMove();
+						}
+					}
 	
 					g2d.setColor(new Color(0, 0, 255, 127));
 					for(Move validMove : validMoves) {
