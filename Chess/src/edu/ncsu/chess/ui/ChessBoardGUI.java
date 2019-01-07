@@ -72,11 +72,12 @@ public class ChessBoardGUI extends JFrame {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					int boardRow = Math.min(
+					
+					int boardX = (int)Math.ceil((double)e.getX() / BoardPanel.this.scale);
+					int boardY = Math.min(
 							ChessBoard.HEIGHT + 1 - (int)Math.ceil((double)e.getY() / scale),
 							ChessBoard.HEIGHT);
-					int boardCol = (int)Math.ceil((double)e.getX() / BoardPanel.this.scale);
-					Location clickedLocation = board.getLocation(boardRow, boardCol);
+					Location clickedLocation = board.getLocation(boardX, boardY);
 					
 					if(selectedLocation == null) { //if no selected location
 						if(!clickedLocation.isEmpty()
@@ -84,11 +85,12 @@ public class ChessBoardGUI extends JFrame {
 							selectedLocation = clickedLocation;
 						}
 					} else { //if previously selected location
-						List<Location> validMoves = selectedLocation.getPiece().validMoves(board, selectedLocation);
+						List<Move> validMoves = board.getMoves(selectedLocation);
 						
-						if(validMoves.contains(clickedLocation)) { //make sure clicking on a valid location
-							Move m = new Move(selectedLocation, clickedLocation);
-							board.makeMove(m);
+						Move attemptedMove = new Move(selectedLocation, clickedLocation);
+						if(validMoves.contains(attemptedMove)) { //make sure clicking on a valid location
+							
+							board.makeMove(attemptedMove);
 							currentTurn = (currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
 						}
 						
@@ -122,31 +124,31 @@ public class ChessBoardGUI extends JFrame {
 			
 			Graphics2D g2d = (Graphics2D)g;
 			
-			for(int row = 1; row <= ChessBoard.HEIGHT; row++) {
-				for(int col = 1; col <= ChessBoard.WIDTH; col++) {
-					g2d.setColor((row + col) % 2 == 0 ? whiteSquareColor : blackSquareColor);
-					g2d.fillRect((col - 1) * this.scale, (ChessBoard.HEIGHT - row) * this.scale, this.scale, this.scale);
+			for(int y = 1; y <= ChessBoard.HEIGHT; y++) {
+				for(int x = 1; x <= ChessBoard.WIDTH; x++) {
+					g2d.setColor((x + y) % 2 == 0 ? whiteSquareColor : blackSquareColor);
+					g2d.fillRect((x - 1) * this.scale, (ChessBoard.HEIGHT - y) * this.scale, this.scale, this.scale);
 					
-					if(!board.getLocation(row, col).isEmpty()) {
-						g2d.drawImage(board.getLocation(row, col).getPiece().getSprite(), 
-								(col - 1) * this.scale, (ChessBoard.HEIGHT - row) * this.scale, this.scale, this.scale, null);
+					if(!board.getLocation(x, y).isEmpty()) {
+						g2d.drawImage(board.getLocation(x, y).getPiece().getSprite(), 
+								(x - 1) * this.scale, (ChessBoard.HEIGHT - y) * this.scale, this.scale, this.scale, null);
 					}
 				}
 			}
 			
 			if(selectedLocation != null) {
 				g2d.setColor(new Color(0, 255, 0, 127));
-				g2d.fillRect((selectedLocation.getCol() - 1) * this.scale, 
-						(ChessBoard.HEIGHT - selectedLocation.getRow()) * this.scale, this.scale, this.scale);
+				g2d.fillRect((selectedLocation.getX() - 1) * this.scale, 
+						(ChessBoard.HEIGHT - selectedLocation.getY()) * this.scale, this.scale, this.scale);
 
 			
 				if(!selectedLocation.isEmpty()) {
-					List<Location> validMoves = selectedLocation.getPiece().validMoves(board, selectedLocation);
+					List<Move> validMoves = board.getMoves(selectedLocation);
 	
 					g2d.setColor(new Color(0, 0, 255, 127));
-					for(Location validMove : validMoves) {
-						g2d.fillRect((validMove.getCol() - 1) * this.scale, 
-								(ChessBoard.HEIGHT - validMove.getRow()) * this.scale, this.scale, this.scale);
+					for(Move validMove : validMoves) {
+						g2d.fillRect((validMove.getEnd().getX() - 1) * this.scale, 
+								(ChessBoard.HEIGHT - validMove.getEnd().getY()) * this.scale, this.scale, this.scale);
 					}
 				}
 			}

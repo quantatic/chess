@@ -6,7 +6,7 @@ package edu.ncsu.chess.game;
  */
 public class Location {
 	
-	private final int row, col;
+	private final int x, y;
 	
 	private Piece piece;
 	
@@ -15,25 +15,25 @@ public class Location {
 	 * @param row the row to set for this location.
 	 * @param  col the column to set for this location.
 	 */
-	public Location(int row, int col) {
-		this.row = row;
-		this.col = col;
+	public Location(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
 	/**
-	 * Gets the row of this location.
-	 * @return the row of this location.
+	 * Gets the x coordinate of this location.
+	 * @return the x coordinate of this location.
 	 */
-	public int getRow() {
-		return this.row;
+	public int getX() {
+		return this.x;
 	}
 	
 	/**
-	 * Gets the column of this location.
-	 * @return the column of this location.
+	 * Gets the y coordinate of this location.
+	 * @return the y coordinate of this location.
 	 */
-	public int getCol() {
-		return this.col;
+	public int getY() {
+		return this.y;
 	}
 	
 	/**
@@ -108,6 +108,6 @@ public class Location {
 	
 	@Override
 	public String toString() {
-		return "Location at row: " + this.row + ", col: " + this.col + " with piece: " + this.piece;
+		return "Location at (" + this.x + ", " + this.y + ") with piece: " + this.piece;
 	}
 }

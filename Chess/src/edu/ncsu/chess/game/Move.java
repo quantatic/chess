@@ -57,12 +57,24 @@ public class Move {
 	public Piece getMoved() {
 		return moved;
 	}
+	
+	/**
+	 * Gets whether or not there was any piece taken during this move.
+	 * @return whether there was any piece taken during this move.
+	 */
+	public boolean pieceWasTaken() {
+		return this.taken != null;
+	}
 
 	/**
 	 * Gets the taken.
 	 * @return the taken.
 	 */
 	public Piece getTaken() {
+		if(this.taken == null) {
+			throw new IllegalStateException("no piece taken for this move");
+		}
+		
 		return taken;
 	}
 	
