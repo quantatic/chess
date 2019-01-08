@@ -85,4 +85,9 @@ public class Move {
 	public boolean getHadMoved() {
 		return this.hadMoved;
 	}
+	
+	@Override
+	public String toString() {
+		return "move with " + moved.getType() + " from " + start.toString() + " to " + end.toString();
+	}
 }

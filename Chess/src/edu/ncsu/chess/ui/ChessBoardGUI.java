@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import edu.ncsu.chess.ai.Minimax;
 import edu.ncsu.chess.game.ChessBoard;
 import edu.ncsu.chess.game.Location;
 import edu.ncsu.chess.game.Move;
@@ -99,7 +100,11 @@ public class ChessBoardGUI extends JFrame {
 						
 						if(validMove) { //make sure clicking on a valid location
 							board.makeMove(attemptedMove);
-							currentTurn = (currentTurn == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
+							currentTurn = currentTurn.other();
+							
+							Move otherMove = Minimax.findBestMove(board, currentTurn, 3);
+							board.makeMove(otherMove);
+							currentTurn = currentTurn.other();
 						}
 						
 						BoardPanel.this.selectedLocation = null;
@@ -152,13 +157,6 @@ public class ChessBoardGUI extends JFrame {
 			
 				if(!selectedLocation.isEmpty()) {
 					List<Move> validMoves = board.getMoves(selectedLocation);
-					
-					for(int i = 0; i < 1000000; i++) {
-						for(Move m : validMoves) {
-							board.makeMove(m);
-							board.undoLastMove();
-						}
-					}
 	
 					g2d.setColor(new Color(0, 0, 255, 127));
 					for(Move validMove : validMoves) {

@@ -108,6 +108,6 @@ public class Location {
 	
 	@Override
 	public String toString() {
-		return "Location at (" + this.x + ", " + this.y + ") with piece: " + this.piece;
+		return "Location at (" + this.x + ", " + this.y + ")";
 	}
 }

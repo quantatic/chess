@@ -10,5 +10,9 @@ public enum PieceColor {
 	BLACK,
 	
 	/** A white chess piece. */
-	WHITE
+	WHITE;
+	
+	public PieceColor other() {
+		return (this == WHITE) ? BLACK : WHITE;
+	}
 }

@@ -61,7 +61,7 @@ public class Piece {
 	 * @return this piece's sprite.
 	 */
 	public BufferedImage getSprite() {
-		String spritePath = "sprites/pieces/" + color.name().toLowerCase() + "/" + type.name().toLowerCase() + ".png";
+		String spritePath = "/sprites/pieces/" + color.name().toLowerCase() + "/" + type.name().toLowerCase() + ".png";
 		
 		return SpriteManager.lookupSprite(spritePath);
 	}
